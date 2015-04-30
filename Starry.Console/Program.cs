@@ -12,9 +12,10 @@ namespace Starry
         {
             try
             {
-                var control = new Web.Controls.HtmlContainerControl("div").Css("height", "100px").Css("height", "100%");
-                control.Children.Append(new Web.Controls.HtmlControl("input").Attr("type", "text").Class("label label-success").Hide().Css("width", "100"));
-                control.Children.Append(new Web.Controls.HtmlControl("input").Attr("type", "submit").Class("btn").Class("btn-success").RemoveClass("btn-success"));
+                var control = new HtmlContainerControl("div").Css("height", "100px").Css("height", "100%");
+                control.Children.Append(new HtmlControl("input").Attr("type", "text").Class("label label-success").Hide().Css("width", "100"));
+                control.Children.Append(new HtmlControl("input").Attr("type", "submit").Class("btn").Class("btn-success").RemoveClass("btn-success"));
+                control.Children.Append(new HtmlInputButton());
                 Console.WriteLine(control);
                 Console.WriteLine("---FINISHED---");
             }

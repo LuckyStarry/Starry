@@ -19,6 +19,26 @@ namespace Starry.Web.Controls
             return control;
         }
 
+        public static TControl Data<TControl>(this TControl control, string name, string value) where TControl : HtmlControl
+        {
+            name = (name ?? string.Empty).Trim();
+            if (string.IsNullOrEmpty(name))
+            {
+                return control;
+            }
+            return control.Attr("data-" + name, value);
+        }
+
+        public static TControl RemoveData<TControl>(this TControl control, string name) where TControl : HtmlControl
+        {
+            name = (name ?? string.Empty).Trim();
+            if (string.IsNullOrEmpty(name))
+            {
+                return control;
+            }
+            return control.RemoveAttr("data-" + name);
+        }
+
         public static TControl Class<TControl>(this TControl control, string name) where TControl : HtmlControl
         {
             if (!control.Classes.Any(@class => @class == name))

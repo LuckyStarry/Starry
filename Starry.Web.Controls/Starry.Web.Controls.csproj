@@ -46,9 +46,20 @@
     <Compile Include="HtmlDocumentAttributeCollection.cs" />
     <Compile Include="HtmlDocumentClassCollection.cs" />
     <Compile Include="HtmlDocumentStyleCollection.cs" />
+    <Compile Include="UI\Input\HtmlInputSubmit.cs" />
+    <Compile Include="UI\Input\HtmlInputButton.cs" />
+    <Compile Include="UI\Input\HtmlInputImage.cs" />
+    <Compile Include="UI\Input\HtmlInputFile.cs" />
+    <Compile Include="UI\Input\HtmlInputHidden.cs" />
+    <Compile Include="UI\Input\HtmlInputRadio.cs" />
+    <Compile Include="UI\Input\HtmlInputCheckBox.cs" />
+    <Compile Include="UI\Input\HtmlInputPassword.cs" />
+    <Compile Include="UI\Input\HtmlInputText.cs" />
+    <Compile Include="UI\Input\HtmlInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HtmlDocumentCollectionReadOnlyException.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
