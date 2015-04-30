@@ -46,6 +46,7 @@
     <Compile Include="HtmlDocumentAttributeCollection.cs" />
     <Compile Include="HtmlDocumentClassCollection.cs" />
     <Compile Include="HtmlDocumentStyleCollection.cs" />
+    <Compile Include="UI\Anchor\HtmlAnchor.cs" />
     <Compile Include="UI\Input\HtmlInputSubmit.cs" />
     <Compile Include="UI\Input\HtmlInputButton.cs" />
     <Compile Include="UI\Input\HtmlInputImage.cs" />
