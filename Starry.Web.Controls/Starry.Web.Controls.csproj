@@ -101,6 +101,12 @@
   <ItemGroup>
     <Compile Include="Extend\IAction.Action.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Starry\Starry.csproj">
+      <Project>{1f988a35-6a3a-41f6-9a36-c72127d716a8}</Project>
+      <Name>Starry</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
