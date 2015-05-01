@@ -38,12 +38,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assistant\SqlClient\SqlCommandBuilder.cs" />
-    <Compile Include="Assistant\ISqlCommandBuilder.cs" />
-    <Compile Include="Assistant\ISqlTextBuilder.cs" />
+    <Compile Include="Assistant\DbContext.cs" />
+    <Compile Include="Assistant\Extend\IDbContext.ExecuteScalar.cs" />
+    <Compile Include="Assistant\IDbContext.cs" />
+    <Compile Include="Assistant\IDbTable.cs" />
+    <Compile Include="Assistant\SqlClient\SqlDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Assistant\Extend\IDbTable.GetList.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

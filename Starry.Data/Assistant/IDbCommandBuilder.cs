@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Starry.Data.Assistant
 {
-    public interface ISqlCommandBuilder
+    public interface IDbCommandBuilder
     {
         IDbCommand CreateSelectCommand<T>();
         IDbCommand CreateInsertCommand<T>();
@@ -14,7 +14,7 @@ namespace Starry.Data.Assistant
         IDbCommand CreateDeleteCommand<T>();
     }
 
-    public interface ISqlCommandBuilder<TCommand> : ISqlCommandBuilder
+    public interface IDbCommandBuilder<TCommand> : IDbCommandBuilder
         where TCommand : IDbCommand
     {
         TCommand CreateSelectCommand<T>();

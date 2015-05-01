@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Starry.Data.Assistant.SqlClient
 {
-    public class SqlCommandBuilder : ISqlCommandBuilder<System.Data.SqlClient.SqlCommand>
+    public class SqlCommandBuilder : IDbCommandBuilder<System.Data.SqlClient.SqlCommand>
     {
         public System.Data.SqlClient.SqlCommand CreateSelectCommand<T>()
         {
@@ -28,22 +28,22 @@ namespace Starry.Data.Assistant.SqlClient
             throw new NotImplementedException();
         }
 
-        IDbCommand ISqlCommandBuilder.CreateSelectCommand<T>()
+        IDbCommand IDbCommandBuilder.CreateSelectCommand<T>()
         {
             return this.CreateSelectCommand<T>();
         }
 
-        IDbCommand ISqlCommandBuilder.CreateInsertCommand<T>()
+        IDbCommand IDbCommandBuilder.CreateInsertCommand<T>()
         {
             return this.CreateInsertCommand<T>();
         }
 
-        IDbCommand ISqlCommandBuilder.CreateUpdateCommand<T>()
+        IDbCommand IDbCommandBuilder.CreateUpdateCommand<T>()
         {
             return this.CreateUpdateCommand<T>();
         }
 
-        IDbCommand ISqlCommandBuilder.CreateDeleteCommand<T>()
+        IDbCommand IDbCommandBuilder.CreateDeleteCommand<T>()
         {
             return this.CreateDeleteCommand<T>();
         }
