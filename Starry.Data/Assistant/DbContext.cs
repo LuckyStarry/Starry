@@ -6,8 +6,9 @@ using System.Data;
 
 namespace Starry.Data.Assistant
 {
-    public abstract class DbContext<TDbConnection> : IDbContext<TDbConnection>
+    public abstract class DbContext<TDbConnection, TDbCommand> : IDbContext<TDbConnection, TDbCommand>
         where TDbConnection : IDbConnection
+        where TDbCommand : IDbCommand
     {
         protected DbContext(TDbConnection dbConnection)
         {
@@ -15,53 +16,35 @@ namespace Starry.Data.Assistant
         }
 
         public TDbConnection Connection { private set; get; }
-
         IDbConnection IDbContext.Connection { get { return this.Connection; } }
 
-        public abstract IEnumerable<TEntity> GetList<TEntity>(string sqlCommandText);
+        public abstract IEnumerable<TEntity> GetList<TEntity>(string sqlCommandText) where TEntity : new();
 
-        public abstract int ExecuteNonQuery(string sqlCommandText);
-
-        public abstract object ExecuteScalar(string sqlCommandText);
-
-        public IDbTable<TEntity> GetTable<TEntity>()
+        public int ExecuteNonQuery(string dbCommandText)
         {
-            throw new NotImplementedException();
+            var dbCommand = this.CreateDbCommand(dbCommandText);
+            return this.ExecuteNonQuery(dbCommand);
         }
-    }
 
-    public abstract class DbContext<TDbConnection, TDbCommand> : DbContext<TDbConnection>
-        where TDbConnection : IDbConnection
-        where TDbCommand : IDbCommand
-    {
-        protected DbContext(TDbConnection dbConnection) : base(dbConnection) { }
-
-        public override int ExecuteNonQuery(string sqlCommandText)
+        public virtual int ExecuteNonQuery(TDbCommand dbCommand)
         {
-            var dbCommand = this.CreateDbCommand(sqlCommandText);
-            if (dbCommand.Connection == null)
-            {
-                dbCommand.Connection = this.Connection;
-            }
-            if (dbCommand.Connection.State != ConnectionState.Open)
-            {
-                dbCommand.Connection.Open();
-            }
             return dbCommand.ExecuteNonQuery();
         }
 
-        public override object ExecuteScalar(string sqlCommandText)
+        public object ExecuteScalar(string dbCommandText)
         {
-            var dbCommand = this.CreateDbCommand(sqlCommandText);
-            if (dbCommand.Connection == null)
-            {
-                dbCommand.Connection = this.Connection;
-            }
-            if (dbCommand.Connection.State != ConnectionState.Open)
-            {
-                dbCommand.Connection.Open();
-            }
+            var dbCommand = this.CreateDbCommand(dbCommandText);
+            return this.ExecuteScalar(dbCommand);
+        }
+
+        public virtual object ExecuteScalar(TDbCommand dbCommand)
+        {
             return dbCommand.ExecuteScalar();
+        }
+
+        public IDbTable<TEntity> GetTable<TEntity>() where TEntity : new()
+        {
+            return new DbTable<TEntity>(this);
         }
 
         protected internal abstract TDbCommand CreateDbCommand(string sqlCommandText);

@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assistant\DbContext.cs" />
+    <Compile Include="Assistant\DbTable.cs" />
     <Compile Include="Assistant\Extend\IDbContext.ExecuteScalar.cs" />
     <Compile Include="Assistant\IDbContext.cs" />
     <Compile Include="Assistant\IDbTable.cs" />
@@ -47,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assistant\Extend\IDbTable.GetList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Starry\Starry.csproj">
+      <Project>{1f988a35-6a3a-41f6-9a36-c72127d716a8}</Project>
+      <Name>Starry</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

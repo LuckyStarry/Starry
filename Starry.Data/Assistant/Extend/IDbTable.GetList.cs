@@ -8,9 +8,5 @@ namespace Starry.Data.Assistant
 {
     public static partial class IDbTableExtend
     {
-        public static IEnumerable<TEntity> GetList<TEntity>(this IDbTable<TEntity> dbTable, Expression<Func<TEntity, bool>> expression)
-        {
-            return dbTable.GetList<TEntity>(expression);
-        }
     }
 }

@@ -6,13 +6,9 @@ using System.Linq.Expressions;
 
 namespace Starry.Data.Assistant
 {
-    public interface IDbTable
+    public interface IDbTable<TEntity>
+        where TEntity : new()
     {
-        IEnumerable<TEntity> GetList<TEntity>(string sqlCommandText);
-    }
-
-    public interface IDbTable<TEntity> : IDbTable
-    {
-        IEnumerable<T> GetList<T>(Expression<Func<TEntity, bool>> expression);
+        IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> expression);
     }
 }
