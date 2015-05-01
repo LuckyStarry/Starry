@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assistant\SqlClient\SqlCommandBuilder.cs" />
     <Compile Include="Assistant\ISqlCommandBuilder.cs" />
     <Compile Include="Assistant\ISqlTextBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
