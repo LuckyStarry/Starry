@@ -5,21 +5,21 @@ using System.Linq;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlControl : HtmlDocument
+    public class HtmlControl : HtmlElement, Interface.IHtmlControl
     {
         public HtmlControl(string tag)
         {
             this.Tag = tag.Trim();
-            this.Classes = new HtmlDocumentClassCollection();
-            this.Attributes = new HtmlDocumentAttributeCollection();
-            this.Styles = new HtmlDocumentStyleCollection();
+            this.Classes = new HtmlElementClassCollection();
+            this.Attributes = new HtmlElementAttributeCollection();
+            this.Styles = new HtmlElementStyleCollection();
         }
 
         public string Tag { private set; get; }
 
-        public HtmlDocumentClassCollection Classes { private set; get; }
-        public HtmlDocumentAttributeCollection Attributes { private set; get; }
-        public HtmlDocumentStyleCollection Styles { private set; get; }
+        public Interface.IHtmlElementClassCollection Classes { private set; get; }
+        public Interface.IHtmlElementAttributeCollection Attributes { private set; get; }
+        public Interface.IHtmlElementStyleCollection Styles { private set; get; }
 
         protected virtual void PreRender() { }
 

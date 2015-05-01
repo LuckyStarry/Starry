@@ -12,14 +12,18 @@ namespace Starry.Web.Controls
         protected HtmlInput(string type)
             : base("input")
         {
-            this.Type = type;
+            if (string.IsNullOrEmpty(type))
+            {
+                throw new ArgumentException("Must set \"type\" for input", "type");
+            }
+            this.Type = type.ToLower();
         }
 
         public string Type { private set; get; }
 
         protected override void PreRender()
         {
-            this.Attr("type", this.Type.ToLower());
+            this.Attr("type", this.Type);
         }
     }
 }

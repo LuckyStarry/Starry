@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlDocumentAttributeCollection : IEnumerable<HtmlDocumentAttribute>
+    internal class HtmlElementAttributeCollection : Interface.IHtmlElementAttributeCollection
     {
-        public HtmlDocumentAttributeCollection()
+        public HtmlElementAttributeCollection()
         {
-            this.attributes = new List<HtmlDocumentAttribute>();
+            this.attributes = new List<Interface.IHtmlElementAttribute>();
         }
 
         public int Count { get { return this.attributes.Count; } }
@@ -33,7 +33,7 @@ namespace Starry.Web.Controls
                 var attribute = this.attributes.FirstOrDefault(attr => attr.Name == name);
                 if (attribute == null)
                 {
-                    this.attributes.Add(new HtmlDocumentAttribute { Name = name, Value = value });
+                    this.attributes.Add(new HtmlElementAttribute { Name = name, Value = value });
                 }
                 else
                 {
@@ -53,9 +53,9 @@ namespace Starry.Web.Controls
             return false;
         }
 
-        private IList<HtmlDocumentAttribute> attributes;
+        private IList<Interface.IHtmlElementAttribute> attributes;
 
-        public IEnumerator<HtmlDocumentAttribute> GetEnumerator()
+        public IEnumerator<Interface.IHtmlElementAttribute> GetEnumerator()
         {
             return this.attributes.GetEnumerator();
         }

@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlDocumentStyle
+    public class HtmlTHead : HtmlContainerControl
     {
-        public string Name { set; get; }
-        public string Value { set; get; }
+        public HtmlTHead() : base("thead") { }
     }
 }

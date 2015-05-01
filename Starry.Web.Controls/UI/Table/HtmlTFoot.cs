@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlDocumentAttribute
+    public class HtmlTFoot : HtmlContainerControl
     {
-        public string Name { set; get; }
-        public string Value { set; get; }
+        public HtmlTFoot() : base("tfoot") { }
     }
 }

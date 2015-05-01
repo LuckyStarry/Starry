@@ -36,17 +36,50 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extend\HtmlControlExtend.cs" />
+    <Compile Include="Attributes\IAction.cs" />
+    <Compile Include="Attributes\IHRef.cs" />
+    <Compile Include="Attributes\IMethod.cs" />
+    <Compile Include="Extend\IHtmlContainerControl.Find.cs" />
+    <Compile Include="Extend\IHtmlContainerControl.Append.cs" />
+    <Compile Include="Extend\IHRef.HRef.cs" />
+    <Compile Include="Extend\IHtmlControl.Display.cs" />
+    <Compile Include="Extend\IHtmlControl.Css.cs" />
+    <Compile Include="Extend\IHtmlControl.Class.cs" />
+    <Compile Include="Extend\IHtmlControl.Data.cs" />
+    <Compile Include="Extend\IHtmlControl.Attr.cs" />
     <Compile Include="HtmlContainerControl.cs" />
     <Compile Include="HtmlControl.cs" />
-    <Compile Include="HtmlDocument.cs" />
-    <Compile Include="HtmlDocumentCollection.cs" />
-    <Compile Include="HtmlDocumentAttribute.cs" />
-    <Compile Include="HtmlDocumentStyle.cs" />
-    <Compile Include="HtmlDocumentAttributeCollection.cs" />
-    <Compile Include="HtmlDocumentClassCollection.cs" />
-    <Compile Include="HtmlDocumentStyleCollection.cs" />
+    <Compile Include="HtmlElement.cs" />
+    <Compile Include="HtmlElementCollection.cs" />
+    <Compile Include="HtmlElementAttribute.cs" />
+    <Compile Include="HtmlElementStyle.cs" />
+    <Compile Include="HtmlElementAttributeCollection.cs" />
+    <Compile Include="HtmlElementClassCollection.cs" />
+    <Compile Include="HtmlElementStyleCollection.cs" />
+    <Compile Include="Interface\IHtmlContainerControl.cs" />
+    <Compile Include="Interface\IHtmlControl.cs" />
+    <Compile Include="Interface\IHtmlElement.cs" />
+    <Compile Include="Interface\IHtmlElementAttribute.cs" />
+    <Compile Include="Interface\IHtmlElementAttributeCollection.cs" />
+    <Compile Include="Interface\IHtmlElementClassCollection.cs" />
+    <Compile Include="Interface\IHtmlElementCollection.cs" />
+    <Compile Include="Interface\IHtmlElementStyle.cs" />
+    <Compile Include="Interface\IHtmlElementStyleCollection.cs" />
     <Compile Include="UI\Anchor\HtmlAnchor.cs" />
+    <Compile Include="UI\Label\HtmlLabel.cs" />
+    <Compile Include="UI\Span\HtmlSpan.cs" />
+    <Compile Include="UI\Form\HtmlForm.cs" />
+    <Compile Include="UI\Input\HtmlTextArea.cs" />
+    <Compile Include="UI\Table\HtmlTableCell.cs" />
+    <Compile Include="UI\Table\HtmlTableRow.cs" />
+    <Compile Include="UI\Table\HtmlTD.cs" />
+    <Compile Include="UI\Table\HtmlTH.cs" />
+    <Compile Include="UI\Table\HtmlTR.cs" />
+    <Compile Include="UI\Table\HtmlTFoot.cs" />
+    <Compile Include="UI\Table\HtmlTBody.cs" />
+    <Compile Include="UI\Table\HtmlTHead.cs" />
+    <Compile Include="UI\Table\HtmlTable.cs" />
+    <Compile Include="UI\Div\HtmlDiv.cs" />
     <Compile Include="UI\Input\HtmlInputSubmit.cs" />
     <Compile Include="UI\Input\HtmlInputButton.cs" />
     <Compile Include="UI\Input\HtmlInputImage.cs" />
@@ -58,9 +91,16 @@
     <Compile Include="UI\Input\HtmlInputText.cs" />
     <Compile Include="UI\Input\HtmlInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HtmlDocumentCollectionReadOnlyException.cs" />
+    <Compile Include="HtmlElementCollectionReadOnlyException.cs" />
+    <Compile Include="UI\UL\HtmlLI.cs" />
+    <Compile Include="UI\UL\HtmlUL.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Extend\IMethod.Method.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extend\IAction.Action.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

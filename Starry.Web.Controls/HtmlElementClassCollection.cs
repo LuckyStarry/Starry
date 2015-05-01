@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlDocumentClassCollection : IEnumerable<string>
+    internal class HtmlElementClassCollection : Interface.IHtmlElementClassCollection
     {
-        public HtmlDocumentClassCollection()
+        public HtmlElementClassCollection()
         {
             this.classes = new List<string>();
         }

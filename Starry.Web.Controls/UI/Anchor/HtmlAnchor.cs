@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlAnchor : HtmlContainerControl
+    public class HtmlAnchor : HtmlContainerControl, Attributes.IHRef
     {
         public HtmlAnchor() : base("a") { }
 

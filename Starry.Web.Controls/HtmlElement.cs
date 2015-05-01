@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlDocument
+    public class HtmlElement : Interface.IHtmlElement
     {
-        public HtmlDocument() : this(string.Empty) { }
+        public HtmlElement() : this(string.Empty) { }
 
-        public HtmlDocument(string html)
+        public HtmlElement(string html)
         {
             this.html = html;
         }
@@ -25,14 +25,14 @@ namespace Starry.Web.Controls
             return this.ToHtmlString();
         }
 
-        private static readonly HtmlDocument empty = new HtmlDocument() { };
-        public static HtmlDocument Empty { get { return empty; } }
+        private static readonly HtmlElement empty = new HtmlElement() { };
+        public static HtmlElement Empty { get { return empty; } }
 
         public override bool Equals(object o)
         {
-            if (o is HtmlDocument)
+            if (o is HtmlElement)
             {
-                return this.Equals(o as HtmlDocument);
+                return this.Equals(o as HtmlElement);
             }
             return object.ReferenceEquals(this, o);
         }
@@ -46,7 +46,7 @@ namespace Starry.Web.Controls
             return base.GetHashCode();
         }
 
-        public bool Equals(HtmlDocument htmlDocument)
+        public bool Equals(HtmlElement htmlDocument)
         {
             if (object.ReferenceEquals(htmlDocument, null))
             {
@@ -59,12 +59,12 @@ namespace Starry.Web.Controls
             return object.ReferenceEquals(this, htmlDocument);
         }
 
-        public static bool operator ==(HtmlDocument left, HtmlDocument right)
+        public static bool operator ==(HtmlElement left, HtmlElement right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(HtmlDocument left, HtmlDocument right)
+        public static bool operator !=(HtmlElement left, HtmlElement right)
         {
             return !(left == right);
         }
