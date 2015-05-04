@@ -10,9 +10,6 @@ namespace Starry.Data.Assistant
     {
         IDbConnection Connection { get; }
         IDbTable<TEntity> GetTable<TEntity>() where TEntity : new();
-        IEnumerable<TEntity> GetList<TEntity>(string sqlCommandText) where TEntity : new();
-        int ExecuteNonQuery(string dbCommandText);
-        object ExecuteScalar(string dbCommandText);
     }
 
     public interface IDbContext<TDbConnection, TDbCommand> : IDbContext
@@ -20,7 +17,5 @@ namespace Starry.Data.Assistant
         where TDbCommand : IDbCommand
     {
         new TDbConnection Connection { get; }
-        int ExecuteNonQuery(TDbCommand dbCommand);
-        object ExecuteScalar(TDbCommand dbCommand);
     }
 }

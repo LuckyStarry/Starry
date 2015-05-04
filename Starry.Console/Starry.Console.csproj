@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Starry.Data\Starry.Data.csproj">
+      <Project>{09078836-64f7-4234-bcac-74d44de42c6a}</Project>
+      <Name>Starry.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Starry.Web.Controls\Starry.Web.Controls.csproj">
       <Project>{a88bfea5-123c-4a1f-aec2-eb7053f7c7a0}</Project>
       <Name>Starry.Web.Controls</Name>

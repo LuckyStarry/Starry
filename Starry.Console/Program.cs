@@ -18,6 +18,10 @@ namespace Starry
                 control.Children.Add(new HtmlInputButton());
                 control.Children.Add(new HtmlAnchor().HRef("http://www.sonhaku.com"));
                 Console.WriteLine(control);
+                var a = 0;
+                var b = 0;
+                System.Linq.Expressions.Expression<Func<C, bool>> f = c => c.V1 + 1 == (a + b) || c.V2 == 2 && c.V1 == 1 && !(c.V4 == c.V5);
+                Console.WriteLine(new Starry.Data.Assistant.SqlClient.SqlCommandBuilder().BuildSqlString(f));
                 Console.WriteLine("---FINISHED---");
             }
             catch (Exception ex)
@@ -31,5 +35,14 @@ namespace Starry
                 Console.ReadKey();
             }
         }
+    }
+
+    class C
+    {
+        public int V1 { set; get; }
+        public int V2 { set; get; }
+        public int V3 { set; get; }
+        public int V4 { set; get; }
+        public int V5 { set; get; }
     }
 }

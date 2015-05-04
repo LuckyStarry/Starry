@@ -16,37 +16,10 @@ namespace Starry.Data.Assistant
         }
 
         public TDbConnection Connection { private set; get; }
+
         IDbConnection IDbContext.Connection { get { return this.Connection; } }
 
-        public abstract IEnumerable<TEntity> GetList<TEntity>(string sqlCommandText) where TEntity : new();
+        public abstract IDbTable<TEntity> GetTable<TEntity>() where TEntity : new();
 
-        public int ExecuteNonQuery(string dbCommandText)
-        {
-            var dbCommand = this.CreateDbCommand(dbCommandText);
-            return this.ExecuteNonQuery(dbCommand);
-        }
-
-        public virtual int ExecuteNonQuery(TDbCommand dbCommand)
-        {
-            return dbCommand.ExecuteNonQuery();
-        }
-
-        public object ExecuteScalar(string dbCommandText)
-        {
-            var dbCommand = this.CreateDbCommand(dbCommandText);
-            return this.ExecuteScalar(dbCommand);
-        }
-
-        public virtual object ExecuteScalar(TDbCommand dbCommand)
-        {
-            return dbCommand.ExecuteScalar();
-        }
-
-        public IDbTable<TEntity> GetTable<TEntity>() where TEntity : new()
-        {
-            return new DbTable<TEntity>(this);
-        }
-
-        protected internal abstract TDbCommand CreateDbCommand(string sqlCommandText);
     }
 }

@@ -12,27 +12,9 @@ namespace Starry.Data.Assistant.SqlClient
         public SqlDbContext(string connectionString) : this(new SqlConnection(connectionString)) { }
         public SqlDbContext(SqlConnection connection) : base(connection) { }
 
-        protected internal override SqlCommand CreateDbCommand(string sqlCommandText)
+        public override IDbTable<TEntity> GetTable<TEntity>()
         {
-            var sqlCmd = new SqlCommand(sqlCommandText);
-            sqlCmd.Connection = this.Connection;
-            if (sqlCmd.Connection.State != ConnectionState.Open)
-            {
-                sqlCmd.Connection.Open();
-            }
-            return sqlCmd;
-        }
-
-        public override IEnumerable<TEntity> GetList<TEntity>(string sqlCommandText)
-        {
-            var sa = new SqlDataAdapter(this.CreateDbCommand(sqlCommandText));
-            var ds = new DataSet();
-            sa.Fill(ds);
-            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-            {
-                return ds.Tables[0].ToList<TEntity>();
-            }
-            return null;
+            return new SqlDbTable<TEntity>(this);
         }
     }
 }
