@@ -7,20 +7,18 @@ using System.Linq.Expressions;
 namespace Starry.Data.Assistant
 {
     public abstract class DbTable<TEntity> : IDbTable<TEntity>
-        where TEntity : new()
+        where TEntity : class, new()
     {
         public DbTable(IDbContext dbContext)
         {
-            this.elementType = typeof(TEntity);
             this.DbContext = dbContext;
         }
 
         public IDbContext DbContext { private set; get; }
 
-        public virtual Type ElementType { get { return this.elementType; } }
-        private Type elementType;
+        public virtual Type ElementType { get { return typeof(TEntity); } }
 
-        public abstract Expression Expression { get; }
+        public virtual Expression Expression { get { return Expression.Constant(this); } }
 
         public abstract IQueryProvider Provider { get; }
 

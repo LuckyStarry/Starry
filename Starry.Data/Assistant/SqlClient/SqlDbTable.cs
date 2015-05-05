@@ -1,28 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Starry.Data.Assistant.SqlClient
 {
-    public class SqlDbTable<TEntity> : DbTable<TEntity>
-        where TEntity : new()
+    public sealed class SqlDbTable<TEntity> : DbTable<TEntity>, IQueryProvider
+        where TEntity : class, new()
     {
-        public SqlDbTable(SqlDbContext dbContext) : base(dbContext) { }
+        private Table<TEntity> table;
+
+        internal SqlDbTable(SqlDbContext dbContext)
+            : base(dbContext)
+        {
+            this.table = dbContext.DataContext.GetTable<TEntity>();
+        }
+
+        public override IQueryProvider Provider { get { return this.table; } }
 
         public override IEnumerator<TEntity> GetEnumerator()
         {
-            return ((IEnumerable<TEntity>)this.Provider.Execute(this.Expression)).GetEnumerator();
+            return this.table.GetEnumerator();
         }
 
-        public override System.Linq.Expressions.Expression Expression
+        IQueryable<TElement> IQueryProvider.CreateQuery<TElement>(Expression expression)
         {
-            get { throw new NotImplementedException(); }
+            return (this.table as IQueryProvider).CreateQuery<TElement>(expression);
         }
 
-        public override IQueryProvider Provider
+        IQueryable IQueryProvider.CreateQuery(Expression expression)
         {
-            get { throw new NotImplementedException(); }
+            return (this.table as IQueryProvider).CreateQuery(expression);
+        }
+
+        TResult IQueryProvider.Execute<TResult>(Expression expression)
+        {
+            return (this.table as IQueryProvider).Execute<TResult>(expression);
+        }
+
+        object IQueryProvider.Execute(Expression expression)
+        {
+            return (this.table as IQueryProvider).Execute(expression);
         }
     }
 }

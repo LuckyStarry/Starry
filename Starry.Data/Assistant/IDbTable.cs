@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace Starry.Data.Assistant
 {
     public interface IDbTable<TEntity> : IQueryable<TEntity>
-        where TEntity : new()
+        where TEntity : class, new()
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Starry.Data.Assistant
 {
-    public abstract class DbContext<TDbConnection, TDbCommand> : IDbContext<TDbConnection, TDbCommand>
+    public abstract class DbContext<TDbConnection, TDbCommand> : IDbContext<TDbConnection, TDbCommand>, IDisposable
         where TDbConnection : IDbConnection
         where TDbCommand : IDbCommand
     {
@@ -19,7 +19,11 @@ namespace Starry.Data.Assistant
 
         IDbConnection IDbContext.Connection { get { return this.Connection; } }
 
-        public abstract IDbTable<TEntity> GetTable<TEntity>() where TEntity : new();
+        public abstract IDbTable<TEntity> GetTable<TEntity>() where TEntity : class, new();
 
+        public virtual void Dispose()
+        {
+            this.Connection.Dispose();
+        }
     }
 }

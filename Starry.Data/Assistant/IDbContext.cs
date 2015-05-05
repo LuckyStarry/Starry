@@ -9,7 +9,7 @@ namespace Starry.Data.Assistant
     public interface IDbContext
     {
         IDbConnection Connection { get; }
-        IDbTable<TEntity> GetTable<TEntity>() where TEntity : new();
+        IDbTable<TEntity> GetTable<TEntity>() where TEntity : class, new();
     }
 
     public interface IDbContext<TDbConnection, TDbCommand> : IDbContext

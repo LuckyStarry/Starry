@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -42,12 +43,7 @@
     <Compile Include="Assistant\DbTable.cs" />
     <Compile Include="Assistant\IDbContext.cs" />
     <Compile Include="Assistant\IDbTable.cs" />
-    <Compile Include="Assistant\SqlClient\SqlDbContext.cs" />
-    <Compile Include="Assistant\SqlClient\SqlDbTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assistant\Extend\IDbTable.GetList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Starry\Starry.csproj">
