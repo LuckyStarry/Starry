@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlInput : HtmlControl
+    public class HtmlInput : HtmlControl, Attributes.IType, Attributes.IValue
     {
         public HtmlInput() : this("text") { }
 
@@ -19,11 +19,16 @@ namespace Starry.Web.Controls
             this.Type = type.ToLower();
         }
 
-        public string Type { private set; get; }
-
-        protected override void PreRender()
+        public virtual string Type
         {
-            this.Attr("type", this.Type);
+            set { this.Type(value); }
+            get { return this.Type(); }
+        }
+
+        public virtual string Value
+        {
+            set { this.Value(value); }
+            get { return this.Value(); }
         }
     }
 }

@@ -9,10 +9,7 @@ namespace Starry.Web.Controls
     {
         public static TControl Class<TControl>(this TControl control, string name) where TControl : Interface.IHtmlControl
         {
-            if (!control.Classes.Any(@class => @class == name))
-            {
-                control.Classes.Add(name);
-            }
+            control.Classes.Add(name);
             return control;
         }
 

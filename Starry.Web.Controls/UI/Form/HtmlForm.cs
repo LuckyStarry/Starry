@@ -9,19 +9,16 @@ namespace Starry.Web.Controls
     {
         public HtmlForm() : base("form") { }
 
-        public string Method { set; get; }
-        public string Action { set; get; }
-
-        protected override void PreRender()
+        public string Method
         {
-            if (!string.IsNullOrEmpty(this.Method))
-            {
-                this.Attr("method", this.Method);
-            }
-            if (!string.IsNullOrEmpty(this.Action))
-            {
-                this.Attr("action", this.Action);
-            }
+            set { this.Method(value); }
+            get { return this.Method(); }
+        }
+
+        public virtual string Action
+        {
+            set { this.Action(value); }
+            get { return this.Action(); }
         }
     }
 }

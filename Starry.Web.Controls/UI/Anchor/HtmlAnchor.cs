@@ -9,14 +9,10 @@ namespace Starry.Web.Controls
     {
         public HtmlAnchor() : base("a") { }
 
-        public string HRef { set; get; }
-
-        protected override void PreRender()
+        public virtual string HRef
         {
-            if (!string.IsNullOrEmpty(this.HRef))
-            {
-                this.Attr("href", this.HRef);
-            }
+            set { this.HRef(value); }
+            get { return this.HRef(); }
         }
     }
 }

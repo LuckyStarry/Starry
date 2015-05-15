@@ -18,6 +18,11 @@ namespace Starry.Web.Controls
             return control;
         }
 
+        public static string Attr<TControl>(this TControl control, string name) where TControl : Interface.IHtmlControl
+        {
+            return control.Attributes[name];
+        }
+
         public static TControl RemoveAttr<TControl>(this TControl control, string name) where TControl : Interface.IHtmlControl
         {
             control.Attributes.Remove(name);

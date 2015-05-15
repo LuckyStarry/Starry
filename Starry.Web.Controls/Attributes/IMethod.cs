@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Starry.Web.Controls.Attributes
 {
-    public interface IMethod
+    public interface IMethod : Interface.IHtmlControl
     {
         string Method { set; get; }
     }
