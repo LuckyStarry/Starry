@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Starry.Web.Controls.Extend
+namespace Starry.Web.Controls
 {
     public static partial class HtmlContainerControlExtend
     {

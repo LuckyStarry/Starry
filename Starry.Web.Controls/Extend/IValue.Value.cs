@@ -12,6 +12,11 @@ namespace Starry.Web.Controls
             return control.Attr("value", value);
         }
 
+        public static TControl Value<TControl>(this TControl control, object value) where TControl : Attributes.IValue
+        {
+            return control.Value(value.ToString());
+        }
+
         public static string Value<TControl>(this TControl control) where TControl : Attributes.IValue
         {
             return control.Attr("value");
