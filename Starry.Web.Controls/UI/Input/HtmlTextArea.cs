@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlTextArea : HtmlControl
+    public class HtmlTextArea : HtmlControl, Attributes.IRows, Attributes.IReadOnly
     {
         public HtmlTextArea()
             : base("textarea")
@@ -13,20 +13,26 @@ namespace Starry.Web.Controls
             this.ReadOnly = false;
         }
 
-        public int Rows { set; get; }
-
-        public bool ReadOnly { set; get; }
-
-        protected override void PreRender()
+        public virtual int Rows
         {
-            if (this.Rows > 0)
+            set { this.Attr(Controls.Attributes.AttributeNames.Rows, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Rows).TryToInt32(); }
+        }
+
+        public virtual bool ReadOnly
+        {
+            set
             {
-                this.Attr("rows", this.Rows);
+                if (value)
+                {
+                    this.Attr(Controls.Attributes.AttributeNames.ReadOnly, Controls.Attributes.AttributeNames.ReadOnly);
+                }
+                else
+                {
+                    this.RemoveAttr(Controls.Attributes.AttributeNames.ReadOnly);
+                }
             }
-            if (this.ReadOnly)
-            {
-                this.Attr("readonly", "readonly");
-            }
+            get { return !string.IsNullOrEmpty(this.Attr(Controls.Attributes.AttributeNames.ReadOnly).Trim()); }
         }
     }
 }

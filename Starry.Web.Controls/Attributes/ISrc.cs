@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Starry.Web.Controls.Attributes
 {
-    public interface IAction : Interface.IHtmlControl
+    public interface ISrc : Interface.IHtmlControl
     {
-        string Action { set; get; }
+        string Src { set; get; }
     }
 }

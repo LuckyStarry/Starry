@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Starry.Web.Controls.Extend
+namespace Starry.Web.Controls
 {
     public static partial class HtmlContainerControlExtend
     {
+        public static IEnumerable<Interface.IHtmlElement> Find<TControl>(this TControl control, Func<Interface.IHtmlElement, bool> expression)
+            where TControl : Interface.IHtmlContainerControl
+        {
+            return control.Children.Where(expression).ToList();
+        }
+
         public static IEnumerable<THtmlElement> Find<TControl, THtmlElement>(this TControl control)
             where TControl : Interface.IHtmlContainerControl
             where THtmlElement : Interface.IHtmlElement
         {
-            return control.Children.Where(ele => ele is THtmlElement).Select(ele => (THtmlElement)ele).ToList();
+            return control.Find(ele => ele is THtmlElement).Select(ele => (THtmlElement)ele).ToList();
         }
 
         public static IEnumerable<THtmlElement> Find<TControl, THtmlElement>(this IEnumerable<TControl> controls)

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Starry.Web.Controls.Attributes
 {
-    public interface IHRef
+    public interface IHRef : Interface.IHtmlControl
     {
         string HRef { set; get; }
     }

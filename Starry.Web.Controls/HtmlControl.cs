@@ -17,6 +17,18 @@ namespace Starry.Web.Controls
 
         public string Tag { private set; get; }
 
+        public virtual string ID
+        {
+            set { this.Attr(Controls.Attributes.AttributeNames.ID, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.ID); }
+        }
+
+        public virtual string Name
+        {
+            set { this.Attr(Controls.Attributes.AttributeNames.Name, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Name); }
+        }
+
         public Interface.IHtmlElementClassCollection Classes { private set; get; }
         public Interface.IHtmlElementAttributeCollection Attributes { private set; get; }
         public Interface.IHtmlElementStyleCollection Styles { private set; get; }

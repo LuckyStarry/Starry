@@ -36,9 +36,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AttributeNames.cs" />
     <Compile Include="Attributes\IAction.cs" />
     <Compile Include="Attributes\IHRef.cs" />
     <Compile Include="Attributes\IMethod.cs" />
+    <Compile Include="Attributes\IChecked.cs" />
+    <Compile Include="Attributes\ISelected.cs" />
+    <Compile Include="Attributes\IReadOnly.cs" />
+    <Compile Include="Attributes\IRows.cs" />
+    <Compile Include="Attributes\IText.cs" />
+    <Compile Include="Attributes\ISrc.cs" />
+    <Compile Include="Attributes\IValue.cs" />
+    <Compile Include="Attributes\IType.cs" />
+    <Compile Include="Extend\IHtmlControl.Name.cs" />
+    <Compile Include="Extend\IHtmlControl.ID.cs" />
+    <Compile Include="Extend\IReadOnly.ReadOnly.cs" />
+    <Compile Include="Extend\IChecked.Checked.cs" />
+    <Compile Include="Extend\ISelected.Selected.cs" />
+    <Compile Include="Extend\IRows.Rows.cs" />
+    <Compile Include="Extend\ISrc.Src.cs" />
+    <Compile Include="Extend\IValue.Value.cs" />
+    <Compile Include="Extend\IType.Type.cs" />
     <Compile Include="Extend\IHtmlContainerControl.Find.cs" />
     <Compile Include="Extend\IHtmlContainerControl.Append.cs" />
     <Compile Include="Extend\IHRef.HRef.cs" />
@@ -66,7 +84,18 @@
     <Compile Include="Interface\IHtmlElementStyle.cs" />
     <Compile Include="Interface\IHtmlElementStyleCollection.cs" />
     <Compile Include="UI\Anchor\HtmlAnchor.cs" />
+    <Compile Include="UI\Button\HtmlButton.cs" />
+    <Compile Include="UI\Document\HtmlScript.cs" />
+    <Compile Include="UI\Document\HtmlMeta.cs" />
+    <Compile Include="UI\Document\HtmlLink.cs" />
+    <Compile Include="UI\Document\HtmlTitle.cs" />
+    <Compile Include="UI\Document\HtmlHead.cs" />
+    <Compile Include="UI\Document\HtmlBody.cs" />
+    <Compile Include="UI\Document\HtmlDocument.cs" />
+    <Compile Include="UI\Img\HtmlImg.cs" />
     <Compile Include="UI\Label\HtmlLabel.cs" />
+    <Compile Include="UI\Select\HtmlOption.cs" />
+    <Compile Include="UI\Select\HtmlSelect.cs" />
     <Compile Include="UI\Span\HtmlSpan.cs" />
     <Compile Include="UI\Form\HtmlForm.cs" />
     <Compile Include="UI\Input\HtmlTextArea.cs" />
@@ -106,6 +135,9 @@
       <Project>{1f988a35-6a3a-41f6-9a36-c72127d716a8}</Project>
       <Name>Starry</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extend\IEnumerable.ToHtmlTable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

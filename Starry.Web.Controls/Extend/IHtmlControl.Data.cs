@@ -22,6 +22,12 @@ namespace Starry.Web.Controls
             return control.Attr("data-" + name, value);
         }
 
+        public static string Data<TControl>(this TControl control, string name) where TControl : Interface.IHtmlControl
+        {
+            name = (name ?? string.Empty).Trim();
+            return control.Attr("data-" + name);
+        }
+
         public static TControl RemoveData<TControl>(this TControl control, string name) where TControl : Interface.IHtmlControl
         {
             name = (name ?? string.Empty).Trim();
