@@ -9,7 +9,8 @@ namespace Starry.Web.Controls
     {
         public static TControl Value<TControl>(this TControl control, string value) where TControl : Attributes.IValue
         {
-            return control.Attr("value", value);
+            control.Value = value;
+            return control;
         }
 
         public static TControl Value<TControl>(this TControl control, object value) where TControl : Attributes.IValue
@@ -19,7 +20,7 @@ namespace Starry.Web.Controls
 
         public static string Value<TControl>(this TControl control) where TControl : Attributes.IValue
         {
-            return control.Attr("value");
+            return control.Value;
         }
     }
 }

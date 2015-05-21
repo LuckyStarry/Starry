@@ -7,14 +7,15 @@ namespace Starry.Web.Controls
 {
     public static partial class IRowsExtend
     {
-        public static TControl Rows<TControl>(this TControl control, int value) where TControl : Attributes.IRows
+        public static TControl Rows<TControl>(this TControl control, int rows) where TControl : Attributes.IRows
         {
-            return control.Attr("rows", value);
+            control.Rows = rows;
+            return control;
         }
 
         public static int Rows<TControl>(this TControl control) where TControl : Attributes.IRows
         {
-            return control.Attr("rows").TryToInt32();
+            return control.Rows;
         }
     }
 }

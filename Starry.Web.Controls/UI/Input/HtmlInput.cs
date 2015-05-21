@@ -21,14 +21,14 @@ namespace Starry.Web.Controls
 
         public virtual string Type
         {
-            set { this.Type(value); }
-            get { return this.Type(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.Type, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Type); }
         }
 
         public virtual string Value
         {
-            set { this.Value(value); }
-            get { return this.Value(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.Value, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Value); }
         }
     }
 }

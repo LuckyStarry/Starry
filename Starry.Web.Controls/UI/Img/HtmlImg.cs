@@ -11,8 +11,8 @@ namespace Starry.Web.Controls
 
         public string Src
         {
-            set { this.Src(value); }
-            get { return this.Src(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.Src, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Src); }
         }
     }
 }

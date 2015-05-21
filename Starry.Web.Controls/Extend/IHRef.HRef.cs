@@ -9,12 +9,13 @@ namespace Starry.Web.Controls
     {
         public static TControl HRef<TControl>(this TControl control, string href) where TControl : Attributes.IHRef
         {
-            return control.Attr("href", href);
+            control.HRef = href;
+            return control;
         }
 
         public static string HRef<TControl>(this TControl control) where TControl : Attributes.IHRef
         {
-            return control.Attr("href");
+            return control.HRef;
         }
     }
 }

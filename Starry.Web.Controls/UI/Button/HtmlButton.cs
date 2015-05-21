@@ -21,8 +21,8 @@ namespace Starry.Web.Controls
 
         public virtual string Type
         {
-            set { this.Type(value); }
-            get { return this.Type(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.Type, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Type); }
         }
     }
 }

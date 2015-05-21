@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AttributeNames.cs" />
     <Compile Include="Attributes\IAction.cs" />
     <Compile Include="Attributes\IHRef.cs" />
     <Compile Include="Attributes\IMethod.cs" />

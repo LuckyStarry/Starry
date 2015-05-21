@@ -9,12 +9,13 @@ namespace Starry.Web.Controls
     {
         public static TControl Method<TControl>(this TControl control, string method) where TControl : Attributes.IMethod
         {
-            return control.Attr("method", method);
+            control.Method = method;
+            return control;
         }
 
         public static string Method<TControl>(this TControl control) where TControl : Attributes.IMethod
         {
-            return control.Attr("method");
+            return control.Method;
         }
     }
 }

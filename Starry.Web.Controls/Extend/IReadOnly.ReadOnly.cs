@@ -9,19 +9,13 @@ namespace Starry.Web.Controls
     {
         public static TControl ReadOnly<TControl>(this TControl control, bool readOnly) where TControl : Attributes.IReadOnly
         {
-            if (readOnly)
-            {
-                return control.Attr("readonly", "readonly");
-            }
-            else
-            {
-                return control.RemoveAttr("readonly");
-            }
+            control.ReadOnly = readOnly;
+            return control;
         }
 
         public static bool ReadOnly<TControl>(this TControl control) where TControl : Attributes.IReadOnly
         {
-            return !string.IsNullOrEmpty(control.Attr("readonly").Trim());
+            return control.ReadOnly;
         }
     }
 }

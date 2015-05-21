@@ -21,14 +21,24 @@ namespace Starry.Web.Controls
 
         public virtual string Value
         {
-            set { this.Value(value); }
-            get { return this.Value(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.Value, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Value); }
         }
 
         public virtual bool Selected
         {
-            set { this.Selected(value); }
-            get { return this.Selected(); }
+            set
+            {
+                if (value)
+                {
+                    this.Attr(Controls.Attributes.AttributeNames.Selected, Controls.Attributes.AttributeNames.Selected);
+                }
+                else
+                {
+                    this.RemoveAttr(Controls.Attributes.AttributeNames.Selected);
+                }
+            }
+            get { return !string.IsNullOrEmpty(this.Attr(Controls.Attributes.AttributeNames.Selected).Trim()); }
         }
     }
 }
