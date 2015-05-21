@@ -9,12 +9,13 @@ namespace Starry.Web.Controls
     {
         public static TControl Action<TControl>(this TControl control, string action) where TControl : Attributes.IAction
         {
-            return control.Attr("action", action);
+            control.Action = action;
+            return control;
         }
 
         public static string Action<TControl>(this TControl control) where TControl : Attributes.IAction
         {
-            return control.Attr("action");
+            return control.Action;
         }
     }
 }

@@ -19,14 +19,14 @@ namespace Starry.Web.Controls
 
         public virtual string ID
         {
-            set { this.ID(value); }
-            get { return this.ID(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.ID, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.ID); }
         }
 
         public virtual string Name
         {
-            set { this.Name(value); }
-            get { return this.Name(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.Name, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Name); }
         }
 
         public Interface.IHtmlElementClassCollection Classes { private set; get; }

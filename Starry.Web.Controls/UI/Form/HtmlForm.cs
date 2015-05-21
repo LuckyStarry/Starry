@@ -11,14 +11,14 @@ namespace Starry.Web.Controls
 
         public string Method
         {
-            set { this.Method(value); }
-            get { return this.Method(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.Method, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Method); }
         }
 
         public virtual string Action
         {
-            set { this.Action(value); }
-            get { return this.Action(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.Action, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.Action); }
         }
     }
 }

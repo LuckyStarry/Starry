@@ -11,8 +11,8 @@ namespace Starry.Web.Controls
 
         public virtual string HRef
         {
-            set { this.HRef(value); }
-            get { return this.HRef(); }
+            set { this.Attr(Controls.Attributes.AttributeNames.HRef, value); }
+            get { return this.Attr(Controls.Attributes.AttributeNames.HRef); }
         }
     }
 }

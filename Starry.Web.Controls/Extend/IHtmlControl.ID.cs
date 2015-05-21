@@ -9,12 +9,13 @@ namespace Starry.Web.Controls
     {
         public static TControl ID<TControl>(this TControl control, string id) where TControl : Interface.IHtmlControl
         {
-            return control.Attr("id", id);
+            control.ID = id;
+            return control;
         }
 
         public static string ID<TControl>(this TControl control) where TControl : Interface.IHtmlControl
         {
-            return control.Attr("id");
+            return control.ID;
         }
     }
 }

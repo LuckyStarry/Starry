@@ -9,12 +9,13 @@ namespace Starry.Web.Controls
     {
         public static TControl Src<TControl>(this TControl control, string src) where TControl : Attributes.ISrc
         {
-            return control.Attr("src", src);
+            control.Src = src;
+            return control;
         }
 
         public static string Src<TControl>(this TControl control) where TControl : Attributes.ISrc
         {
-            return control.Attr("src");
+            return control.Src;
         }
     }
 }

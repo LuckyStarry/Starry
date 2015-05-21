@@ -7,21 +7,15 @@ namespace Starry.Web.Controls
 {
     public static partial class ISelectedExtend
     {
-        public static TControl Selected<TControl>(this TControl control, bool readOnly) where TControl : Attributes.ISelected
+        public static TControl Selected<TControl>(this TControl control, bool selected) where TControl : Attributes.ISelected
         {
-            if (readOnly)
-            {
-                return control.Attr("selected", "selected");
-            }
-            else
-            {
-                return control.RemoveAttr("selected");
-            }
+            control.Selected = selected;
+            return control;
         }
 
         public static bool Selected<TControl>(this TControl control) where TControl : Attributes.ISelected
         {
-            return !string.IsNullOrEmpty(control.Attr("selected").Trim());
+            return control.Selected;
         }
     }
 }
