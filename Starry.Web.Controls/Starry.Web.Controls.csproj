@@ -48,6 +48,7 @@
     <Compile Include="Attributes\ISrc.cs" />
     <Compile Include="Attributes\IValue.cs" />
     <Compile Include="Attributes\IType.cs" />
+    <Compile Include="Attributes\TagNames.cs" />
     <Compile Include="Extend\IHtmlControl.Name.cs" />
     <Compile Include="Extend\IHtmlControl.ID.cs" />
     <Compile Include="Extend\IReadOnly.ReadOnly.cs" />
