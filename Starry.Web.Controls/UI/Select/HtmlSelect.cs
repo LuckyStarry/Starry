@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlSelect : HtmlContainerControl
     {
-        public HtmlSelect() : base("select") { }
+        public HtmlSelect() : base(Controls.Attributes.TagNames.Select) { }
     }
 }

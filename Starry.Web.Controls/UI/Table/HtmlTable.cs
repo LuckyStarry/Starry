@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlTable : HtmlContainerControl
     {
-        public HtmlTable() : base("table") { }
+        public HtmlTable() : base(Controls.Attributes.TagNames.Table) { }
     }
 }

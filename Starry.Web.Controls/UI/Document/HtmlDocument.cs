@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlDocument : HtmlContainerControl
     {
-        public HtmlDocument() : base("html") { }
+        public HtmlDocument() : base(Controls.Attributes.TagNames.Html) { }
     }
 }

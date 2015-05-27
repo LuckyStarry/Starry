@@ -7,7 +7,7 @@ namespace Starry.Web.Controls
 {
     public class HtmlAnchor : HtmlContainerControl, Attributes.IHRef
     {
-        public HtmlAnchor() : base("a") { }
+        public HtmlAnchor() : base(Controls.Attributes.TagNames.Anchor) { }
 
         public virtual string HRef
         {

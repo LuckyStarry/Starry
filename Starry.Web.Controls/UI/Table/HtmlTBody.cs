@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlTBody : HtmlContainerControl
     {
-        public HtmlTBody() : base("tbody") { }
+        public HtmlTBody() : base(Controls.Attributes.TagNames.TBody) { }
     }
 }

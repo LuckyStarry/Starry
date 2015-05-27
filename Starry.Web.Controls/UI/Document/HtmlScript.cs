@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlScript : HtmlContainerControl
     {
-        public HtmlScript() : base("script") { }
+        public HtmlScript() : base(Controls.Attributes.TagNames.Script) { }
     }
 }

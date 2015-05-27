@@ -7,8 +7,8 @@ namespace Starry.Web.Controls
 {
     public class HtmlLabel : HtmlContainerControl
     {
-        public HtmlLabel() : base("label") { }
-        public HtmlLabel(string text) : base("label", text) { }
-        public HtmlLabel(params HtmlElement[] innerElements) : base("label", innerElements) { }
+        public HtmlLabel() : base(Controls.Attributes.TagNames.Label) { }
+        public HtmlLabel(string text) : base(Controls.Attributes.TagNames.Label, text) { }
+        public HtmlLabel(params HtmlElement[] innerElements) : base(Controls.Attributes.TagNames.Label, innerElements) { }
     }
 }

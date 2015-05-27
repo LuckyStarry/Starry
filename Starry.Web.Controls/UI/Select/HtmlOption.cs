@@ -7,7 +7,7 @@ namespace Starry.Web.Controls
 {
     public class HtmlOption : HtmlContainerControl, Attributes.IValue, Attributes.ISelected
     {
-        public HtmlOption() : base("option") { }
+        public HtmlOption() : base(Controls.Attributes.TagNames.Option) { }
 
         public virtual string Text
         {

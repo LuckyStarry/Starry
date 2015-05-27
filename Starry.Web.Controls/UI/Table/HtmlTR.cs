@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlTR : HtmlTableRow
     {
-        public HtmlTR() : base("tr") { }
+        public HtmlTR() : base(Controls.Attributes.TagNames.TR) { }
     }
 }

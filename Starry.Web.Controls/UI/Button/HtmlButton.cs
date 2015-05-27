@@ -10,11 +10,11 @@ namespace Starry.Web.Controls
         public HtmlButton() : this("button") { }
 
         protected HtmlButton(string type)
-            : base("button")
+            : base(Controls.Attributes.TagNames.Button)
         {
             if (string.IsNullOrEmpty(type))
             {
-                throw new ArgumentException("Must set \"type\" for button", "type");
+                throw new ArgumentException("Must set \"type\" for button", Controls.Attributes.AttributeNames.Type);
             }
             this.Type = type.ToLower();
         }

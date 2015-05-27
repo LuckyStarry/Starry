@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlLink : HtmlContainerControl
     {
-        public HtmlLink() : base("link") { }
+        public HtmlLink() : base(Controls.Attributes.TagNames.Link) { }
     }
 }

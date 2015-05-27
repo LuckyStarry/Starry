@@ -7,8 +7,8 @@ namespace Starry.Web.Controls
 {
     public class HtmlSpan : HtmlContainerControl
     {
-        public HtmlSpan() : base("span") { }
-        public HtmlSpan(string text) : base("span", text) { }
-        public HtmlSpan(params HtmlElement[] innerElements) : base("span", innerElements) { }
+        public HtmlSpan() : base(Controls.Attributes.TagNames.Span) { }
+        public HtmlSpan(string text) : base(Controls.Attributes.TagNames.Span, text) { }
+        public HtmlSpan(params HtmlElement[] innerElements) : base(Controls.Attributes.TagNames.Span, innerElements) { }
     }
 }

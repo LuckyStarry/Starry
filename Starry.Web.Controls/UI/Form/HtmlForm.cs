@@ -7,7 +7,7 @@ namespace Starry.Web.Controls
 {
     public class HtmlForm : HtmlContainerControl, Attributes.IMethod, Attributes.IAction
     {
-        public HtmlForm() : base("form") { }
+        public HtmlForm() : base(Controls.Attributes.TagNames.Form) { }
 
         public string Method
         {

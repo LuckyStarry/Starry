@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlDiv : HtmlContainerControl
     {
-        public HtmlDiv() : base("div") { }
+        public HtmlDiv() : base(Controls.Attributes.TagNames.Div) { }
     }
 }

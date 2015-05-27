@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlTFoot : HtmlContainerControl
     {
-        public HtmlTFoot() : base("tfoot") { }
+        public HtmlTFoot() : base(Controls.Attributes.TagNames.TFoot) { }
     }
 }

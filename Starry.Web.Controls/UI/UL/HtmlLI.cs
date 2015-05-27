@@ -7,8 +7,8 @@ namespace Starry.Web.Controls
 {
     public class HtmlLI : HtmlContainerControl
     {
-        public HtmlLI() : base("li") { }
-        public HtmlLI(string text) : base("li", text) { }
-        public HtmlLI(params HtmlElement[] innerElements) : base("li", innerElements) { }
+        public HtmlLI() : base(Controls.Attributes.TagNames.LI) { }
+        public HtmlLI(string text) : base(Controls.Attributes.TagNames.LI, text) { }
+        public HtmlLI(params HtmlElement[] innerElements) : base(Controls.Attributes.TagNames.LI, innerElements) { }
     }
 }

@@ -7,6 +7,6 @@ namespace Starry.Web.Controls
 {
     public class HtmlMeta : HtmlContainerControl
     {
-        public HtmlMeta() : base("meta") { }
+        public HtmlMeta() : base(Controls.Attributes.TagNames.Meta) { }
     }
 }

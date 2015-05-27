@@ -8,7 +8,7 @@ namespace Starry.Web.Controls
     public class HtmlTextArea : HtmlControl, Attributes.IRows, Attributes.IReadOnly
     {
         public HtmlTextArea()
-            : base("textarea")
+            : base(Controls.Attributes.TagNames.TextArea)
         {
             this.ReadOnly = false;
         }

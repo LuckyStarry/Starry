@@ -7,7 +7,7 @@ namespace Starry.Web.Controls
 {
     public class HtmlImg : HtmlControl, Attributes.ISrc
     {
-        public HtmlImg() : base("img") { }
+        public HtmlImg() : base(Controls.Attributes.TagNames.Image) { }
 
         public string Src
         {

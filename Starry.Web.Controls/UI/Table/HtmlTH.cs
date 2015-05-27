@@ -7,8 +7,8 @@ namespace Starry.Web.Controls
 {
     public class HtmlTH : HtmlTableCell
     {
-        public HtmlTH() : base("th") { }
-        public HtmlTH(string innerText) : base("th", innerText) { }
-        public HtmlTH(HtmlElement innerControl) : base("th", innerControl) { }
+        public HtmlTH() : base(Controls.Attributes.TagNames.TH) { }
+        public HtmlTH(string innerText) : base(Controls.Attributes.TagNames.TH, innerText) { }
+        public HtmlTH(HtmlElement innerControl) : base(Controls.Attributes.TagNames.TH, innerControl) { }
     }
 }

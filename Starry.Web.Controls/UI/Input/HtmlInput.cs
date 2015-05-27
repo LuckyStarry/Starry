@@ -10,11 +10,11 @@ namespace Starry.Web.Controls
         public HtmlInput() : this("text") { }
 
         protected HtmlInput(string type)
-            : base("input")
+            : base(Controls.Attributes.TagNames.Input)
         {
             if (string.IsNullOrEmpty(type))
             {
-                throw new ArgumentException("Must set \"type\" for input", "type");
+                throw new ArgumentException("Must set \"type\" for input", Controls.Attributes.AttributeNames.Type);
             }
             this.Type = type.ToLower();
         }
