@@ -85,6 +85,13 @@
     <Compile Include="Interface\IHtmlElementStyleCollection.cs" />
     <Compile Include="UI\Anchor\HtmlAnchor.cs" />
     <Compile Include="UI\Button\HtmlButton.cs" />
+    <Compile Include="UI\Document\HtmlScript.cs" />
+    <Compile Include="UI\Document\HtmlMeta.cs" />
+    <Compile Include="UI\Document\HtmlLink.cs" />
+    <Compile Include="UI\Document\HtmlTitle.cs" />
+    <Compile Include="UI\Document\HtmlHead.cs" />
+    <Compile Include="UI\Document\HtmlBody.cs" />
+    <Compile Include="UI\Document\HtmlDocument.cs" />
     <Compile Include="UI\Img\HtmlImg.cs" />
     <Compile Include="UI\Label\HtmlLabel.cs" />
     <Compile Include="UI\Select\HtmlOption.cs" />
