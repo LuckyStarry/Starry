@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extend\IEnumerable.ToDataTable.cs" />
     <Compile Include="Extend\String.Convert.cs" />
     <Compile Include="Extend\String.ToString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
