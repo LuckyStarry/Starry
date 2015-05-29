@@ -1,2 +1,7 @@
 language: csharp
 solution: Starry.sln
+install:
+  - nuget restore Starry.sln
+
+script:
+  - xbuild Starry.sln
