@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Assistant\DbContext.cs" />
+    <Compile Include="Extend\IEnumerable.ToDataTable.cs" />
     <Compile Include="Data\Assistant\DbTable.cs" />
     <Compile Include="Data\Assistant\IDbContext.cs" />
     <Compile Include="Data\Assistant\IDbTable.cs" />
