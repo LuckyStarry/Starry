@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlTextArea : HtmlControl, Attributes.IRows, Attributes.IReadOnly
+    public class HtmlTextArea : HtmlContainerControl, Attributes.IRows, Attributes.IReadOnly
     {
         public HtmlTextArea()
             : base(Controls.Attributes.TagNames.TextArea)

@@ -61,6 +61,10 @@ namespace Starry.Web.Controls
 
         public static bool operator ==(HtmlElement left, HtmlElement right)
         {
+            if (object.Equals(left, null))
+            {
+                return object.Equals(right, null);
+            }
             return left.Equals(right);
         }
 
