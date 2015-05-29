@@ -1,9 +1,7 @@
 language: csharp
 solution: Starry.sln
 install:
-  - sudo apt-get install nunit-console
   - nuget restore Starry.sln
 
 script:
   - xbuild Starry.sln
-  - nunit-console Starry.Test/bin/Debug/Starry.Test.dll
