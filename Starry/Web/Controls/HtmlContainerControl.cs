@@ -56,13 +56,13 @@ namespace Starry.Web.Controls
                 html.Append(" ");
                 html.Append(this.Styles.ToHtmlString());
             }
-            html.AppendLine(">");
-
             if (this.Children != null && this.Children.Count > 0)
             {
+                html.AppendLine(">");
                 html.Append(this.Children.ToHtmlString());
                 html.AppendLine();
             }
+            html.Append(">");
             html.AppendFormat("</{0}>", this.Tag);
 
             return html.ToString();
