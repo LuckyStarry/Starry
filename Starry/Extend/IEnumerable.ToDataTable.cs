@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Starry
 {
-    public static class IEnumerableExtend
+    public static partial class IEnumerableExtend
     {
         public static DataTable ToDataTable<T>(this IEnumerable<T> enumerable) where T : class
         {
