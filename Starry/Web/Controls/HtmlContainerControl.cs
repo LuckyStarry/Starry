@@ -10,7 +10,7 @@ namespace Starry.Web.Controls
         public HtmlContainerControl(string tag)
             : base(tag)
         {
-            this.Children = new HtmlElementCollection();
+            this.Children = new HtmlElementCollection(this);
         }
 
         public HtmlContainerControl(string tag, string innerHTML)
