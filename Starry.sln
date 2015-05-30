@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starry", "Starry\Starry.csproj", "{1F988A35-6A3A-41F6-9A36-C72127D716A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starry.Test", "Starry.Test\Starry.Test.csproj", "{15D3D923-ABBB-4913-AE88-580425F558C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starry.Tests", "Starry.Tests\Starry.Tests.csproj", "{15D3D923-ABBB-4913-AE88-580425F558C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

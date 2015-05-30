@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Starry.Test.Web.Controls.BuildTest
+namespace Starry.Tests.Web.Controls.BuildTest
 {
     [TestClass]
     public class BuildTest
