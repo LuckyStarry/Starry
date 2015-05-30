@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Web.Controls\BuildTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web.Controls\LoopTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Starry\Starry.csproj">

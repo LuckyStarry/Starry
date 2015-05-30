@@ -65,6 +65,7 @@
     <Compile Include="Web\Controls\Extend\IHRef.HRef.cs" />
     <Compile Include="Web\Controls\Extend\IHtmlContainerControl.Append.cs" />
     <Compile Include="Web\Controls\Extend\IHtmlContainerControl.Find.cs" />
+    <Compile Include="Web\Controls\Extend\IHtmlElement.Wrap.cs" />
     <Compile Include="Web\Controls\Extend\IHtmlControl.Attr.cs" />
     <Compile Include="Web\Controls\Extend\IHtmlControl.Class.cs" />
     <Compile Include="Web\Controls\Extend\IHtmlControl.Css.cs" />

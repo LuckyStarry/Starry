@@ -15,6 +15,8 @@ namespace Starry.Web.Controls
 
         private string html;
 
+        public Interface.IHtmlElement Parent { set; get; }
+
         public virtual string ToHtmlString()
         {
             return this.html;
