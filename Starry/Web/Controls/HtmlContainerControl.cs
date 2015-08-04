@@ -35,37 +35,5 @@ namespace Starry.Web.Controls
         }
 
         public Interface.IHtmlElementCollection Children { private set; get; }
-
-        public override string ToHtmlString()
-        {
-            this.PreRender();
-            var html = new StringBuilder("<");
-            html.Append(this.Tag);
-            if (this.Classes != null && this.Classes.Count > 0)
-            {
-                html.Append(" ");
-                html.Append(this.Classes.ToHtmlString());
-            }
-            if (this.Attributes != null && this.Attributes.Count > 0)
-            {
-                html.Append(" ");
-                html.Append(this.Attributes.ToHtmlString());
-            }
-            if (this.Styles != null && this.Styles.Count > 0)
-            {
-                html.Append(" ");
-                html.Append(this.Styles.ToHtmlString());
-            }
-            if (this.Children != null && this.Children.Count > 0)
-            {
-                html.AppendLine(">");
-                html.Append(this.Children.ToHtmlString());
-                html.AppendLine();
-            }
-            html.Append(">");
-            html.AppendFormat("</{0}>", this.Tag);
-
-            return html.ToString();
-        }
     }
 }

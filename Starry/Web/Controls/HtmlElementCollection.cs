@@ -102,14 +102,5 @@ namespace Starry.Web.Controls
         {
             return this.GetEnumerator();
         }
-
-        public string ToHtmlString()
-        {
-            if (this.elements != null && this.elements.Any())
-            {
-                return string.Join(System.Environment.NewLine, this.elements.Select(ele => ele.ToHtmlString()).ToArray());
-            }
-            return string.Empty;
-        }
     }
 }

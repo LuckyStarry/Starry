@@ -8,6 +8,5 @@ namespace Starry.Web.Controls.Interface
     public interface IHtmlElement
     {
         IHtmlElement Parent { set; get; }
-        string ToHtmlString();
     }
 }

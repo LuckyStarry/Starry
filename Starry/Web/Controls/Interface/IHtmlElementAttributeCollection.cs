@@ -11,6 +11,5 @@ namespace Starry.Web.Controls.Interface
         void Clear();
         string this[string name] { set; get; }
         bool Remove(string name);
-        string ToHtmlString();
     }
 }

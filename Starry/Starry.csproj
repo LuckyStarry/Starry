@@ -88,8 +88,10 @@
     <Compile Include="Web\Controls\HtmlElementClassCollection.cs" />
     <Compile Include="Web\Controls\HtmlElementCollection.cs" />
     <Compile Include="Web\Controls\HtmlElementCollectionReadOnlyException.cs" />
+    <Compile Include="Web\Controls\HtmlElementRender.cs" />
     <Compile Include="Web\Controls\HtmlElementStyle.cs" />
     <Compile Include="Web\Controls\HtmlElementStyleCollection.cs" />
+    <Compile Include="Web\Controls\Interface\IHtmlElementRender.cs" />
     <Compile Include="Web\Controls\Interface\IHtmlContainerControl.cs" />
     <Compile Include="Web\Controls\Interface\IHtmlControl.cs" />
     <Compile Include="Web\Controls\Interface\IHtmlElement.cs" />
