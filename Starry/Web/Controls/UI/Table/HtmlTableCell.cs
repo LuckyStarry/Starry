@@ -14,9 +14,12 @@ namespace Starry.Web.Controls
         protected HtmlTableCell(string tag, HtmlElement innerControl)
             : base(tag)
         {
-            if (!string.IsNullOrEmpty(innerControl.ToString()))
+            if (innerControl != null)
             {
-                this.Children.Add(innerControl);
+                if (!string.IsNullOrEmpty(innerControl.ToString()))
+                {
+                    this.Children.Add(innerControl);
+                }
             }
         }
     }
