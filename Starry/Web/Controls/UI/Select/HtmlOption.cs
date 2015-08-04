@@ -5,19 +5,9 @@ using System.Text;
 
 namespace Starry.Web.Controls
 {
-    public class HtmlOption : HtmlContainerControl, Attributes.IValue, Attributes.ISelected
+    public class HtmlOption : HtmlControl, Attributes.IValue, Attributes.ISelected
     {
         public HtmlOption() : base(Controls.Attributes.TagNames.Option) { }
-
-        public virtual string Text
-        {
-            set
-            {
-                this.Children.Clear();
-                this.Append(new HtmlElement(value));
-            }
-            get { return this.Children.ToHtmlString(); }
-        }
 
         public virtual string Value
         {

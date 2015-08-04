@@ -160,12 +160,12 @@ namespace Starry.Tests.Web.Controls.BuildTest
             Assert.AreEqual("<meta></meta>", control.ToHtmlString());
         }
 
-        [TestMethod]
-        public void BuildEmptyOption()
-        {
-            var control = new Starry.Web.Controls.HtmlOption();
-            Assert.AreEqual("<option></option>", control.ToHtmlString());
-        }
+        //[TestMethod]
+        //public void BuildEmptyOption()
+        //{
+        //    var control = new Starry.Web.Controls.HtmlOption();
+        //    Assert.AreEqual("<option></option>", control.ToHtmlString());
+        //}
 
         [TestMethod]
         public void BuildEmptyScript()

@@ -12,6 +12,5 @@ namespace Starry.Web.Controls.Interface
         int Count { get; }
         bool ReadOnly { get; }
         bool Remove(IHtmlElement element);
-        string ToHtmlString();
     }
 }

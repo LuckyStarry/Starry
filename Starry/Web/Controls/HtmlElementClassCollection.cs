@@ -50,17 +50,5 @@ namespace Starry.Web.Controls
         {
             return this.GetEnumerator();
         }
-
-        public string ToHtmlString()
-        {
-            if (this.classes != null && this.classes.Any())
-            {
-                var html = new StringBuilder("class=\"");
-                html.Append(string.Join(" ", this.classes.ToArray()));
-                html.Append("\"");
-                return html.ToString();
-            }
-            return string.Empty;
-        }
     }
 }
