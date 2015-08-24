@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Starry.Services
+namespace Starry.Services.Core
 {
-    public class Module<TLoader, THandler> : Core.Engine, Core.IModule, Core.IModule<TLoader>
-        where TLoader : Core.ILoader
-        where THandler : Core.IHandler
+    public abstract class Module<TLoader, THandler> : Engine, IModule, IModule<TLoader>
+        where TLoader : ILoader
+        where THandler : IHandler
     {
         private List<THandler> handlers;
 
@@ -15,16 +15,22 @@ namespace Starry.Services
         {
             this.Loader = loader;
             this.MaxConcurrent = 1;
+            this.handlers = new List<THandler>();
+        }
+        public Module(TLoader loader, string moduleName)
+            : this(loader)
+        {
+            this.ModuleName = moduleName;
         }
 
         public TLoader Loader { private set; get; }
-        Core.ILoader Core.IModule.Loader { get { return this.Loader; } }
+        ILoader IModule.Loader { get { return this.Loader; } }
 
         public int MaxConcurrent { set; get; }
 
         public string ModuleName { set; get; }
 
-        protected override void DoHandle(System.Threading.CancellationToken cancellationToken)
+        protected sealed override void DoHandle(System.Threading.CancellationToken cancellationToken)
         {
             for (int i = 0; i < this.handlers.Count; i++)
             {
@@ -85,7 +91,6 @@ namespace Starry.Services
                 {
                     break;
                 }
-                moduleHandler.SystemModule = this;
                 this.handlers.Add(moduleHandler);
             }
             while (this.handlers.Count > this.MaxConcurrent)
@@ -104,24 +109,36 @@ namespace Starry.Services
                 }
             }
         }
+
+        protected abstract THandler CreateModuleHandler();
     }
 
-    public class Module<THandler> : Module<Core.ILoader, THandler>
-        where THandler : Core.IHandler
+    public abstract class Module<THandler> : Module<ILoader, THandler>
+        where THandler : IHandler
     {
-        public Module(Core.ILoader loader)
+        public Module(ILoader loader)
             : base(loader)
         {
 
         }
+        public Module(ILoader loader, string moduleName)
+            : this(loader)
+        {
+            this.ModuleName = moduleName;
+        }
     }
 
-    public class Module : Module<Core.IHandler>
+    public abstract class Module : Module<IHandler>
     {
-        public Module(Core.ILoader loader)
+        public Module(ILoader loader)
             : base(loader)
         {
 
+        }
+        public Module(ILoader loader, string moduleName)
+            : this(loader)
+        {
+            this.ModuleName = moduleName;
         }
     }
 }

@@ -3,47 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Starry.Services
+namespace Starry.Services.Core
 {
-    public abstract class Loader : Core.Engine
+    public abstract class Loader : Engine
     {
-        private IDictionary<string, Core.IModule> Modules;
+        private IDictionary<string, IModule> Modules;
         private object syncLock = new object();
 
         public Loader()
         {
-            this.Modules = new Dictionary<string, Core.IModule>();
+            this.Modules = new Dictionary<string, IModule>();
         }
 
         public void Append(string moduleName)
         {
-            this.Append(moduleName, this.CreateModule(moduleName));
+            this.Append(this.CreateModule(moduleName));
         }
 
-        public void Append(string moduleName, Core.IModule systemModule)
+        public void Append(IModule module)
         {
-            if (string.IsNullOrWhiteSpace(moduleName))
+            if (string.IsNullOrWhiteSpace(module.ModuleName))
             {
-                throw new ArgumentException("模块名不能为空", "moduleName");
+                throw new ArgumentException("The module'name cannot be empty or null", "moduleName");
             }
-            if (systemModule == null)
+            if (module == null)
             {
-                throw new ArgumentNullException("systemModule", "模块不能为Null");
+                throw new ArgumentNullException("module", "The module cannot be null");
             }
-            moduleName = moduleName.Trim().ToLower();
+            var moduleName = module.ModuleName.Trim().ToLower();
             if (!this.Modules.ContainsKey(moduleName))
             {
                 lock (this.syncLock)
                 {
                     if (!this.Modules.ContainsKey(moduleName))
                     {
-                        this.Modules.Add(moduleName, systemModule);
+                        this.Modules.Add(moduleName, module);
                     }
                 }
             }
         }
 
-        public Core.IModule this[string moduleName]
+        public IModule this[string moduleName]
         {
             get
             {
@@ -63,15 +63,12 @@ namespace Starry.Services
             }
         }
 
-        public Core.IModule[] GetModules()
+        public IModule[] GetModules()
         {
             return this.Modules.Values.ToArray();
         }
 
-        public virtual Core.IModule CreateModule(string moduleName)
-        {
-            throw new NotImplementedException("需要指定创建模块实例的方法");
-        }
+        public abstract IModule CreateModule(string moduleName);
 
         protected override void DoHandle(System.Threading.CancellationToken cancellationToken)
         {
