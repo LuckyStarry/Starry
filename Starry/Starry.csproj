@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Log\ILogDetail.cs" />
+    <Compile Include="Log\ILogger.cs" />
+    <Compile Include="Log\LogLevel.cs" />
     <Compile Include="Services\CustomHandler.cs" />
     <Compile Include="Data\Assistant\DbContext.cs" />
     <Compile Include="Extend\IEnumerable.ToDataTable.cs" />
