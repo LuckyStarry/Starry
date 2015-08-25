@@ -7,6 +7,7 @@ namespace Starry.Web.Controls.Interface
 {
     public interface IHtmlControl : IHtmlElement
     {
+        string Tag { get; }
         string ID { set; get; }
         string Name { set; get; }
         IHtmlElementClassCollection Classes { get; }

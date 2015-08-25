@@ -64,22 +64,5 @@ namespace Starry.Web.Controls
         {
             return this.GetEnumerator();
         }
-
-        public string ToHtmlString()
-        {
-            if (this.styles != null && this.styles.Any())
-            {
-                var html = new StringBuilder("style=\"");
-                var stylesString = new List<string>();
-                foreach (var style in this.styles)
-                {
-                    stylesString.Add(string.Format("{0}: {1}", style.Name, style.Value));
-                }
-                html.Append(string.Join("; ", stylesString.ToArray()));
-                html.Append("\"");
-                return html.ToString();
-            }
-            return string.Empty;
-        }
     }
 }
