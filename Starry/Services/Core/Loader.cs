@@ -22,13 +22,13 @@ namespace Starry.Services.Core
 
         public void Append(IModule module)
         {
+            if (module == null)
+            {
+                throw new ArgumentNullException("module");
+            }
             if (string.IsNullOrWhiteSpace(module.ModuleName))
             {
                 throw new ArgumentException("The module'name cannot be empty or null", "moduleName");
-            }
-            if (module == null)
-            {
-                throw new ArgumentNullException("module", "The module cannot be null");
             }
             var moduleName = module.ModuleName.Trim().ToLower();
             if (!this.Modules.ContainsKey(moduleName))
@@ -49,7 +49,7 @@ namespace Starry.Services.Core
             {
                 if (string.IsNullOrWhiteSpace(moduleName))
                 {
-                    throw new ArgumentException("模块名不能为空", "moduleName");
+                    throw new ArgumentException("The module'name cannot be empty or null", "moduleName");
                 }
                 moduleName = moduleName.Trim().ToLower();
                 lock (this.syncLock)

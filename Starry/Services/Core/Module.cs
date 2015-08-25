@@ -110,6 +110,27 @@ namespace Starry.Services.Core
             }
         }
 
+        protected override void DoFinished()
+        {
+            this.handlers.RemoveAll(i => i == null);
+            while (this.handlers.Count > 0)
+            {
+                var lastHandler = this.handlers[this.handlers.Count - 1];
+                if (this.handlers.Remove(lastHandler))
+                {
+                    try
+                    {
+                        lastHandler.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.OnException(ex);
+                    }
+                }
+            }
+            base.DoFinished();
+        }
+
         protected abstract THandler CreateModuleHandler();
     }
 
