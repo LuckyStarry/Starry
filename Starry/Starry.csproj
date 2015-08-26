@@ -39,7 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\CustomHandler.cs" />
+    <Compile Include="Services\Action.ToCustomizeModule.cs" />
+    <Compile Include="Services\CustomizeHandler.cs" />
     <Compile Include="Data\Assistant\DbContext.cs" />
     <Compile Include="Extend\IEnumerable.ToDataTable.cs" />
     <Compile Include="Data\Assistant\DbTable.cs" />
@@ -51,7 +52,8 @@
     <Compile Include="Services\Core\Engine.cs" />
     <Compile Include="Services\Core\IEngine.cs" />
     <Compile Include="Services\Core\IHandler.cs" />
-    <Compile Include="Services\CustomModule.cs" />
+    <Compile Include="Services\CustomizeModuleLightly.cs" />
+    <Compile Include="Services\CustomizeModule.cs" />
     <Compile Include="Services\EngineState.cs" />
     <Compile Include="Services\Core\IService.cs" />
     <Compile Include="Services\Core\IModule.cs" />

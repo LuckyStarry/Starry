@@ -94,8 +94,9 @@ namespace Starry.Services.Core
                             this.cancellationTokenSource = new CancellationTokenSource();
                         }
                         this.task = new Task(this.Handle, (object)this.cancellationTokenSource.Token);
-                        this.DoStart();
+                        this.OnStart();
                         this.State = EngineState.Running;
+                        this.lastRunning = DateTime.Now;
                         this.task.Start();
                     }
                     catch (Exception ex)
@@ -110,7 +111,7 @@ namespace Starry.Services.Core
             }
         }
 
-        protected virtual void DoStart() { }
+        protected virtual void OnStart() { }
 
         private Task task;
         private CancellationTokenSource cancellationTokenSource;
@@ -128,11 +129,11 @@ namespace Starry.Services.Core
                     return;
                 }
             }
-            this.DoStop();
+            this.OnStop();
             this.State = EngineState.Stopped;
         }
 
-        protected virtual void DoStop() { }
+        protected virtual void OnStop() { }
 
         private void Handle(object objCancellationToken)
         {
@@ -142,16 +143,16 @@ namespace Starry.Services.Core
                 this.lastRunning = DateTime.Now;
                 try
                 {
-                    this.DoHandle(cancellationToken);
+                    this.OnHandle(cancellationToken);
                     cancellationToken.ThrowIfCancellationRequested();
                 }
                 catch (Exception ex)
                 {
                     this.OnException(ex);
                 }
-                this.DoSleep();
+                this.OnSleep();
             }
-            this.DoFinished();
+            this.OnFinished();
         }
 
         protected virtual bool HandleContinue()
@@ -159,27 +160,24 @@ namespace Starry.Services.Core
             return this.State == EngineState.Running;
         }
 
-        protected virtual void DoSleep()
+        protected abstract void OnHandle(CancellationToken cancellationToken);
+
+        protected virtual void OnSleep()
         {
             System.Threading.Thread.Sleep(10);
         }
 
-        protected virtual void DoFinished() { }
+        protected virtual void OnFinished() { }
 
-        protected abstract void DoHandle(CancellationToken cancellationToken);
-
-        protected void OnException(Exception ex)
+        protected virtual void OnException(Exception ex)
         {
             if (this.ExceptionHappend != null)
             {
                 this.ExceptionHappend(this, new EventArgs.ExceptionHappendEventArgs(ex));
             }
-            this.DoException(ex);
         }
 
-        protected virtual void DoException(Exception ex) { }
-
-        protected virtual void DoDispose() { }
+        protected virtual void OnDispose() { }
 
         public void Dispose()
         {
@@ -210,7 +208,7 @@ namespace Starry.Services.Core
                     this.OnException(ex);
                 }
             }
-            this.DoDispose();
+            this.OnDispose();
             this.State = EngineState.Disposed;
         }
     }

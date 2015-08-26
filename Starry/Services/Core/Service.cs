@@ -70,7 +70,7 @@ namespace Starry.Services.Core
 
         public abstract IModule CreateModule(string moduleName);
 
-        protected override void DoHandle(System.Threading.CancellationToken cancellationToken)
+        protected override void OnHandle(System.Threading.CancellationToken cancellationToken)
         {
             var removeModules = new List<string>();
             foreach (var module in this.Modules)
@@ -137,7 +137,7 @@ namespace Starry.Services.Core
             }
         }
 
-        protected override void DoFinished()
+        protected override void OnFinished()
         {
             foreach (var module in this.Modules)
             {
@@ -164,7 +164,7 @@ namespace Starry.Services.Core
                     }
                 }
             }
-            base.DoFinished();
+            base.OnFinished();
         }
     }
 }

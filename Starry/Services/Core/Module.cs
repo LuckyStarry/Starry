@@ -35,7 +35,7 @@ namespace Starry.Services.Core
 
         public string ModuleName { set; get; }
 
-        protected sealed override void DoHandle(System.Threading.CancellationToken cancellationToken)
+        protected sealed override void OnHandle(System.Threading.CancellationToken cancellationToken)
         {
             for (int i = 0; i < this.handlers.Count; i++)
             {
@@ -115,7 +115,7 @@ namespace Starry.Services.Core
             }
         }
 
-        protected override void DoFinished()
+        protected override void OnFinished()
         {
             this.handlers.RemoveAll(i => i == null);
             while (this.handlers.Count > 0)
@@ -133,7 +133,7 @@ namespace Starry.Services.Core
                     }
                 }
             }
-            base.DoFinished();
+            base.OnFinished();
         }
 
         protected abstract THandler CreateModuleHandler();
@@ -147,6 +147,7 @@ namespace Starry.Services.Core
         {
 
         }
+
         public Module(IService service, string moduleName)
             : this(service)
         {
@@ -161,6 +162,7 @@ namespace Starry.Services.Core
         {
 
         }
+
         public Module(IService service, string moduleName)
             : this(service)
         {
