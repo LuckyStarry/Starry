@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Starry.Services.Core
 {
-    public interface ILoader
+    public interface IService
     {
     }
 }
