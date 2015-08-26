@@ -53,13 +53,13 @@
     <Compile Include="Services\Core\IHandler.cs" />
     <Compile Include="Services\CustomModule.cs" />
     <Compile Include="Services\EngineState.cs" />
-    <Compile Include="Services\Core\ILoader.cs" />
+    <Compile Include="Services\Core\IService.cs" />
     <Compile Include="Services\Core\IModule.cs" />
     <Compile Include="Services\EventArgs\EngineStateChangedEventArgs.cs" />
     <Compile Include="Services\EventArgs\ExceptionHappendEventArgs.cs" />
     <Compile Include="Services\EventArgs\ServiceEventArgs.cs" />
     <Compile Include="Services\Core\Handler.cs" />
-    <Compile Include="Services\Core\Loader.cs" />
+    <Compile Include="Services\Core\Service.cs" />
     <Compile Include="Services\Core\Module.cs" />
     <Compile Include="Web\Controls\Attributes\AttributeNames.cs" />
     <Compile Include="Web\Controls\Attributes\IAction.cs" />

@@ -5,26 +5,31 @@ using System.Text;
 
 namespace Starry.Services.Core
 {
-    public abstract class Module<TLoader, THandler> : Engine, IModule, IModule<TLoader>
-        where TLoader : ILoader
+    public abstract class Module<TService, THandler> : Engine, IModule, IModule<TService>
+        where TService : IService
         where THandler : IHandler
     {
         private List<THandler> handlers;
 
-        public Module(TLoader loader)
+        public Module(TService service)
         {
-            this.Loader = loader;
+            if (service == null)
+            {
+                throw new ArgumentNullException("service");
+            }
+            this.Service = service;
             this.MaxConcurrent = 1;
             this.handlers = new List<THandler>();
         }
-        public Module(TLoader loader, string moduleName)
-            : this(loader)
+
+        public Module(TService service, string moduleName)
+            : this(service)
         {
             this.ModuleName = moduleName;
         }
 
-        public TLoader Loader { private set; get; }
-        ILoader IModule.Loader { get { return this.Loader; } }
+        public TService Service { private set; get; }
+        IService IModule.Service { get { return this.Service; } }
 
         public int MaxConcurrent { set; get; }
 
@@ -134,16 +139,16 @@ namespace Starry.Services.Core
         protected abstract THandler CreateModuleHandler();
     }
 
-    public abstract class Module<THandler> : Module<ILoader, THandler>
+    public abstract class Module<THandler> : Module<IService, THandler>
         where THandler : IHandler
     {
-        public Module(ILoader loader)
-            : base(loader)
+        public Module(IService service)
+            : base(service)
         {
 
         }
-        public Module(ILoader loader, string moduleName)
-            : this(loader)
+        public Module(IService service, string moduleName)
+            : this(service)
         {
             this.ModuleName = moduleName;
         }
@@ -151,13 +156,13 @@ namespace Starry.Services.Core
 
     public abstract class Module : Module<IHandler>
     {
-        public Module(ILoader loader)
-            : base(loader)
+        public Module(IService service)
+            : base(service)
         {
 
         }
-        public Module(ILoader loader, string moduleName)
-            : this(loader)
+        public Module(IService service, string moduleName)
+            : this(service)
         {
             this.ModuleName = moduleName;
         }

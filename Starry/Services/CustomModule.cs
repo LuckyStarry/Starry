@@ -7,8 +7,8 @@ namespace Starry.Services
 {
     public class CustomModule : Core.Module
     {
-        public CustomModule(Core.ILoader loader, string moduleName, Action action)
-            : base(loader, moduleName)
+        public CustomModule(Core.IService service, string moduleName, Action action)
+            : base(service, moduleName)
         {
             if (action == null)
             {
@@ -19,7 +19,7 @@ namespace Starry.Services
 
         private Action action;
 
-        protected override Core.IHandler CreateModuleHandler()
+        protected sealed override Core.IHandler CreateModuleHandler()
         {
             return new CustomHandler(this, this.action);
         }

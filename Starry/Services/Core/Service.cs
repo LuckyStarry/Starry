@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Starry.Services.Core
 {
-    public abstract class Loader : Engine
+    public abstract class Service : Engine
     {
         private IDictionary<string, IModule> Modules;
         private object syncLock = new object();
 
-        public Loader()
+        public Service()
         {
             this.Modules = new Dictionary<string, IModule>();
         }
@@ -28,7 +28,7 @@ namespace Starry.Services.Core
             }
             if (string.IsNullOrWhiteSpace(module.ModuleName))
             {
-                throw new ArgumentException("The module'name cannot be empty or null", "moduleName");
+                throw new ArgumentException("The module's name cannot be empty or null", "moduleName");
             }
             var moduleName = module.ModuleName.Trim().ToLower();
             if (!this.Modules.ContainsKey(moduleName))
@@ -49,7 +49,7 @@ namespace Starry.Services.Core
             {
                 if (string.IsNullOrWhiteSpace(moduleName))
                 {
-                    throw new ArgumentException("The module'name cannot be empty or null", "moduleName");
+                    throw new ArgumentException("The module's name cannot be empty or null", "moduleName");
                 }
                 moduleName = moduleName.Trim().ToLower();
                 lock (this.syncLock)

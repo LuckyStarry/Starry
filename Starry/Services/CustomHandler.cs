@@ -24,7 +24,7 @@ namespace Starry.Services
         public bool Asycn { set; get; }
         public Action Callback { set; get; }
 
-        protected override void DoHandle(System.Threading.CancellationToken cancellationToken)
+        protected sealed override void DoHandle(System.Threading.CancellationToken cancellationToken)
         {
             if (this.Asycn)
             {
