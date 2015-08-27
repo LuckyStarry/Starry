@@ -12,5 +12,12 @@ namespace Starry.Services
         {
             return new CustomizeModuleLightly(action, service);
         }
+
+        public static CustomizeModule ToCustomizeModule(this Action<CancellationToken> action, Core.IService service, string moduleName)
+        {
+            var module = action.ToCustomizeModule(service);
+            module.ModuleName = moduleName ?? string.Empty;
+            return module;
+        }
     }
 }
