@@ -64,49 +64,33 @@ namespace Starry.Services.Core
 
         public void Start()
         {
-            lock (this.syncLock)
+            if ((this.State == EngineState.Standby)
+                || (this.State == EngineState.Stopped))
             {
-                if ((this.State == EngineState.Standby)
-                    || (this.State == EngineState.Stopped))
+                lock (this.syncLock)
                 {
-                    this.State = EngineState.Standup;
-                    try
+                    if ((this.State == EngineState.Standby)
+                        || (this.State == EngineState.Stopped))
                     {
-                        if (this.task != null)
+                        this.State = EngineState.Standup;
+                        try
                         {
-                            if (!this.task.Wait(this.AliveTimeout))
-                            {
-                                this.cancellationTokenSource.Cancel();
-                                try
-                                {
-                                    this.task.Wait();
-                                }
-                                catch (Exception ex)
-                                {
-                                    this.OnException(ex);
-                                }
-                            }
-                            this.task = null;
-                            this.cancellationTokenSource = null;
+                            this.DisposeTaskAndCancelToken();
+                            this.task = new Task(this.Handle, (object)this.cancellationTokenSource.Token);
+                            this.OnStart();
+                            this.State = EngineState.Running;
+                            this.lastRunning = DateTime.Now;
+                            this.task.Start();
                         }
-                        if (this.cancellationTokenSource == null)
+                        catch (Exception ex)
                         {
-                            this.cancellationTokenSource = new CancellationTokenSource();
+                            this.OnException(ex);
                         }
-                        this.task = new Task(this.Handle, (object)this.cancellationTokenSource.Token);
-                        this.OnStart();
-                        this.State = EngineState.Running;
-                        this.lastRunning = DateTime.Now;
-                        this.task.Start();
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        this.OnException(ex);
+                        return;
                     }
-                }
-                else
-                {
-                    return;
                 }
             }
         }
@@ -118,19 +102,59 @@ namespace Starry.Services.Core
 
         public void Stop()
         {
-            lock (this.syncLock)
+            if (this.State == EngineState.Running)
             {
-                if (this.State == EngineState.Running)
+                lock (this.syncLock)
                 {
-                    this.State = EngineState.Stopping;
-                }
-                else
-                {
-                    return;
+                    if (this.State == EngineState.Running)
+                    {
+                        this.State = EngineState.Stopping;
+                        this.DisposeTaskAndCancelToken();
+                        this.OnStop();
+                        this.State = EngineState.Stopped;
+                    }
                 }
             }
-            this.OnStop();
-            this.State = EngineState.Stopped;
+        }
+
+        private void DisposeTaskAndCancelToken()
+        {
+            if (this.task != null)
+            {
+                if (!this.task.Wait(this.AliveTimeout))
+                {
+                    this.cancellationTokenSource.Cancel();
+                    try
+                    {
+                        this.task.Wait(this.AliveTimeout);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.OnException(ex);
+                    }
+                }
+                try
+                {
+                    this.task.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    this.OnException(ex);
+                }
+                if (this.cancellationTokenSource != null)
+                {
+                    try
+                    {
+                        this.cancellationTokenSource.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.OnException(ex);
+                    }
+                }
+            }
+            this.task = null;
+            this.cancellationTokenSource = null;
         }
 
         protected virtual void OnStop() { }
@@ -181,35 +205,21 @@ namespace Starry.Services.Core
 
         public void Dispose()
         {
-            lock (this.syncLock)
+            if ((this.State != EngineState.Disposing)
+                && (this.State != EngineState.Disposed))
             {
-                this.State = EngineState.Disposing;
-            }
-            if (this.task != null)
-            {
-                if (!this.task.Wait(this.AliveTimeout))
+                lock (this.syncLock)
                 {
-                    this.cancellationTokenSource.Cancel();
-                    try
+                    if ((this.State != EngineState.Disposing)
+                        && (this.State != EngineState.Disposed))
                     {
-                        this.task.Wait();
-                    }
-                    catch (Exception ex)
-                    {
-                        this.OnException(ex);
+                        this.State = EngineState.Disposing;
+                        this.DisposeTaskAndCancelToken();
+                        this.OnDispose();
+                        this.State = EngineState.Disposed;
                     }
                 }
-                try
-                {
-                    this.task.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    this.OnException(ex);
-                }
             }
-            this.OnDispose();
-            this.State = EngineState.Disposed;
         }
     }
 }
