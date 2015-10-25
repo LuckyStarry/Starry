@@ -40,9 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Sql\DataBaseContext.cs" />
-    <Compile Include="Data\Sql\DataBaseEntity.cs" />
+    <Compile Include="Data\Sql\Attributes\DbTableAttribute.cs" />
+    <Compile Include="Data\Sql\Attributes\DbIgnoreAttribute.cs" />
+    <Compile Include="Data\Sql\Attributes\DbColumnAttribute.cs" />
+    <Compile Include="Data\Sql\DbColumn.cs" />
+    <Compile Include="Data\Sql\DbContext.cs" />
+    <Compile Include="Data\Sql\Attributes\DbPrimaryKeyAttribute.cs" />
+    <Compile Include="Data\Sql\DbEntity.cs" />
+    <Compile Include="Data\Sql\DbTable.cs" />
+    <Compile Include="Data\Sql\Extend\DbCommand.AppendParameter.cs" />
     <Compile Include="Data\Sql\Extend\DbDataAdapter.GetData.cs" />
+    <Compile Include="Data\Sql\MySql\MySqlEntity.cs" />
     <Compile Include="Services\Action.ToCustomizeModule.cs" />
     <Compile Include="Services\CustomizeHandler.cs" />
     <Compile Include="Extend\IEnumerable.ToDataTable.cs" />

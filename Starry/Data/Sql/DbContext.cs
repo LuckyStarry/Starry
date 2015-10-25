@@ -7,21 +7,21 @@ using System.Text;
 
 namespace Starry.Data.Sql
 {
-    public class DataBaseContext
+    public class DbContext
     {
-        public DataBaseContext(DataBaseEntity dataBaseEntity)
+        public DbContext(DbEntity dbEntity)
         {
-            this.DataBase = dataBaseEntity;
+            this.DbEntity = dbEntity;
         }
 
-        public DataBaseEntity DataBase { private set; get; }
+        public DbEntity DbEntity { private set; get; }
 
         protected virtual T DbHandle<TDbCommand, T>(TDbCommand dbCommand, Func<TDbCommand, T> dbHandle)
             where TDbCommand : DbCommand
         {
             if (dbCommand.Connection == null)
             {
-                dbCommand.Connection = this.DataBase.CreateDbConnection();
+                dbCommand.Connection = this.DbEntity.CreateDbConnection();
             }
             if (dbCommand.Connection.State != ConnectionState.Open)
             {
@@ -67,14 +67,14 @@ namespace Starry.Data.Sql
 
         public virtual DataSet ExecuteDataSet(DbCommand dbCommand)
         {
-            return this.DbHandle(dbCommand, cmd => this.DataBase.CreateDbDataAdapter(cmd).GetData());
+            return this.DbHandle(dbCommand, cmd => this.DbEntity.CreateDbDataAdapter(cmd).GetData());
         }
 
         public virtual DataTable ExecuteDataTable(DbCommand dbCommand)
         {
             return this.DbHandle(dbCommand, cmd =>
             {
-                var dataSet = this.DataBase.CreateDbDataAdapter(cmd).GetData();
+                var dataSet = this.DbEntity.CreateDbDataAdapter(cmd).GetData();
                 if (dataSet != null && dataSet.Tables.Count > 0)
                 {
                     return dataSet.Tables[0];
@@ -85,13 +85,13 @@ namespace Starry.Data.Sql
 
         public virtual int ExecuteNonQuery(string commandText)
         {
-            var command = this.DataBase.CreateDbCommand(commandText);
+            var command = this.DbEntity.CreateDbCommand(commandText);
             return this.ExecuteNonQuery(command);
         }
 
         public virtual object ExecuteScalar(string commandText)
         {
-            var command = this.DataBase.CreateDbCommand(commandText);
+            var command = this.DbEntity.CreateDbCommand(commandText);
             return this.ExecuteScalar(command);
         }
 
@@ -102,19 +102,19 @@ namespace Starry.Data.Sql
 
         public virtual T ExecuteScalar<T>(string commandText, Func<object, T> convert)
         {
-            var command = this.DataBase.CreateDbCommand(commandText);
+            var command = this.DbEntity.CreateDbCommand(commandText);
             return this.ExecuteScalar(command, convert);
         }
 
         public virtual DataSet ExecuteDataSet(string commandText)
         {
-            var command = this.DataBase.CreateDbCommand(commandText);
+            var command = this.DbEntity.CreateDbCommand(commandText);
             return this.ExecuteDataSet(command);
         }
 
         public virtual DataTable ExecuteDataTable(string commandText)
         {
-            var command = this.DataBase.CreateDbCommand(commandText);
+            var command = this.DbEntity.CreateDbCommand(commandText);
             return this.ExecuteDataTable(command);
         }
     }

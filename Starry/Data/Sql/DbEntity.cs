@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Starry.Data.Sql
 {
-    public abstract class DataBaseEntity
+    public class DbEntity
     {
-        protected DataBaseEntity(string connectionName)
+        protected internal DbEntity(string connectionName)
         {
             this.ConnectionName = connectionName;
             var connectionSettings = System.Configuration.ConfigurationManager.ConnectionStrings[this.ConnectionName];
@@ -17,24 +17,25 @@ namespace Starry.Data.Sql
                 throw new ArgumentOutOfRangeException("connectionName");
             }
             this.ConnectionString = connectionSettings.ConnectionString;
-            this.ProviderName = connectionSettings.ProviderName;
+            this.provider = DbProviderFactories.GetFactory(connectionSettings.ProviderName);
+        }
+
+        protected internal DbEntity(string connectionString, string providerName)
+        {
+            this.ConnectionName = string.Empty;
+            this.ConnectionString = connectionString;
+            this.provider = DbProviderFactories.GetFactory(providerName);
         }
 
         public string ConnectionString { private set; get; }
-        public string ProviderName { private set; get; }
         public string ConnectionName { private set; get; }
+        //TODO get "@" on ms-sql / "?" on mysql / ":" on oracle 
+        public virtual string ParameterPrefix { get { return "@"; } }
 
-        private DbProviderFactory _provider;
+        private DbProviderFactory provider;
         protected virtual DbProviderFactory DbProviderFactory
         {
-            get
-            {
-                if (this._provider == null)
-                {
-                    this._provider = DbProviderFactories.GetFactory(this.ProviderName);
-                }
-                return this._provider;
-            }
+            get { return this.provider; }
         }
 
         public virtual DbConnection CreateDbConnection()
@@ -44,9 +45,15 @@ namespace Starry.Data.Sql
             return dbConnection;
         }
 
-        public virtual DbCommand CreateDbCommand(string commandText)
+        public virtual DbCommand CreateDbCommand()
         {
             var dbCommand = this.DbProviderFactory.CreateCommand();
+            return dbCommand;
+        }
+
+        public virtual DbCommand CreateDbCommand(string commandText)
+        {
+            var dbCommand = this.CreateDbCommand();
             dbCommand.CommandText = commandText;
             return dbCommand;
         }
