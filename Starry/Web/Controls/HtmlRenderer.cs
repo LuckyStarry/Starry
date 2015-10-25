@@ -18,18 +18,18 @@ namespace Starry.Web.Controls
                 html.Append(htmlControl.Tag);
                 if (htmlControl.Classes != null && htmlControl.Classes.Count > 0)
                 {
-                    html.Append(" ");
-                    html.Append(htmlControl.Classes.ToHtmlString());
+                    html.AppendFormat(" class=\"{0}\"", string.Join(" ", htmlControl.Classes.ToArray()));
                 }
                 if (htmlControl.Attributes != null && htmlControl.Attributes.Count > 0)
                 {
                     html.Append(" ");
-                    html.Append(htmlControl.Attributes.ToHtmlString());
+                    html.Append(string.Join(" ", htmlControl.Attributes.Select(
+                        attr => string.Format("{0}=\"{1}\"", attr.Name, attr.Value)).ToArray()));
                 }
                 if (htmlControl.Styles != null && htmlControl.Styles.Count > 0)
                 {
-                    html.Append(" ");
-                    html.Append(htmlControl.Styles.ToHtmlString());
+                    html.AppendFormat(" style=\"{0}\"", string.Join(" ", htmlControl.Styles.Select(
+                        css => string.Format("{0}=\"{1}\";", css.Name, css.Value)).ToArray()));
                 }
                 if (htmlControl is Interface.IHtmlContainerControl)
                 {
