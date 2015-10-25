@@ -8,10 +8,10 @@ namespace Starry.Web.Controls
     public class HtmlTableCell : HtmlContainerControl
     {
         public HtmlTableCell() : this(Controls.Attributes.TagNames.TD) { }
-        public HtmlTableCell(HtmlElement innerControl) : this(Controls.Attributes.TagNames.TD, innerControl) { }
+        public HtmlTableCell(Interface.IHtmlElement innerControl) : this(Controls.Attributes.TagNames.TD, innerControl) { }
         protected HtmlTableCell(string tag) : this(tag, string.Empty) { }
-        protected HtmlTableCell(string tag, string innerHtml) : this(tag, string.IsNullOrEmpty(innerHtml) ? null : new HtmlElement(innerHtml)) { }
-        protected HtmlTableCell(string tag, HtmlElement innerControl)
+        protected HtmlTableCell(string tag, string innerHtml) : this(tag, string.IsNullOrEmpty(innerHtml) ? null : new HtmlString(innerHtml)) { }
+        protected HtmlTableCell(string tag, Interface.IHtmlElement innerControl)
             : base(tag)
         {
             if (innerControl != null)

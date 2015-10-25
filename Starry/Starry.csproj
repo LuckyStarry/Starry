@@ -48,6 +48,7 @@
     <Compile Include="Data\Assistant\IDbTable.cs" />
     <Compile Include="Extend\String.Convert.cs" />
     <Compile Include="Extend\String.ToString.cs" />
+    <Compile Include="ICloneable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Core\Engine.cs" />
     <Compile Include="Services\Core\IEngine.cs" />
@@ -108,7 +109,9 @@
     <Compile Include="Web\Controls\HtmlElementRender.cs" />
     <Compile Include="Web\Controls\HtmlElementStyle.cs" />
     <Compile Include="Web\Controls\HtmlElementStyleCollection.cs" />
+    <Compile Include="Web\Controls\HtmlRenderer.cs" />
     <Compile Include="Web\Controls\Interface\IHtmlElementRender.cs" />
+    <Compile Include="Web\Controls\HtmlString.cs" />
     <Compile Include="Web\Controls\Interface\IHtmlContainerControl.cs" />
     <Compile Include="Web\Controls\Interface\IHtmlControl.cs" />
     <Compile Include="Web\Controls\Interface\IHtmlElement.cs" />

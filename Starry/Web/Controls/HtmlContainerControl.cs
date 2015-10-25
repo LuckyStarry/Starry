@@ -13,12 +13,12 @@ namespace Starry.Web.Controls
             this.Children = new HtmlElementCollection(this);
         }
 
-        public HtmlContainerControl(string tag, string innerHTML)
+        public HtmlContainerControl(string tag, string text)
             : this(tag)
         {
-            if (!string.IsNullOrEmpty(innerHTML))
+            if (!string.IsNullOrEmpty(text))
             {
-                this.Children.Add(new HtmlElement(innerHTML));
+                this.Children.Add(new HtmlString(text));
             }
         }
 
