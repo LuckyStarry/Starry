@@ -16,7 +16,10 @@ namespace Starry.Web.Controls
         {
             if (innerControl != null)
             {
-                this.Children.Add(innerControl);
+                if (!string.IsNullOrEmpty(innerControl.ToString()))
+                {
+                    this.Children.Add(innerControl);
+                }
             }
         }
     }

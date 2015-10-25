@@ -64,19 +64,5 @@ namespace Starry.Web.Controls
         {
             return this.GetEnumerator();
         }
-
-        public string ToHtmlString()
-        {
-            if (this.attributes != null && this.attributes.Any())
-            {
-                var attrHtml = new List<string>();
-                foreach (var attr in this.attributes)
-                {
-                    attrHtml.Add(string.Format("{0}=\"{1}\"", attr.Name, attr.Value));
-                }
-                return string.Join(" ", attrHtml.ToArray());
-            }
-            return string.Empty;
-        }
     }
 }
