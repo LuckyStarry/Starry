@@ -32,32 +32,5 @@ namespace Starry.Web.Controls
         public Interface.IHtmlElementClassCollection Classes { private set; get; }
         public Interface.IHtmlElementAttributeCollection Attributes { private set; get; }
         public Interface.IHtmlElementStyleCollection Styles { private set; get; }
-
-        protected virtual void PreRender() { }
-
-        public override string ToHtmlString()
-        {
-            this.PreRender();
-            var html = new StringBuilder("<");
-            html.Append(this.Tag);
-            if (this.Classes != null && this.Classes.Count > 0)
-            {
-                html.Append(" ");
-                html.Append(this.Classes.ToHtmlString());
-            }
-            if (this.Attributes != null && this.Attributes.Count > 0)
-            {
-                html.Append(" ");
-                html.Append(this.Attributes.ToHtmlString());
-            }
-            if (this.Styles != null && this.Styles.Count > 0)
-            {
-                html.Append(" ");
-                html.Append(this.Styles.ToHtmlString());
-            }
-            html.Append(" />");
-
-            return html.ToString();
-        }
     }
 }

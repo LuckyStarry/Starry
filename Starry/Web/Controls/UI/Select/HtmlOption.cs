@@ -9,16 +9,6 @@ namespace Starry.Web.Controls
     {
         public HtmlOption() : base(Controls.Attributes.TagNames.Option) { }
 
-        public virtual string Text
-        {
-            set
-            {
-                this.Children.Clear();
-                this.Append(new HtmlElement(value));
-            }
-            get { return this.Children.ToHtmlString(); }
-        }
-
         public virtual string Value
         {
             set { this.Attr(Controls.Attributes.AttributeNames.Value, value); }
