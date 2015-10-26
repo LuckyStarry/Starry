@@ -8,35 +8,63 @@ namespace Starry.Data.Sql
 {
     public class DbEntity
     {
-        protected internal DbEntity(string connectionName)
+        protected internal DbEntity(string connectionString, DbProviderFactory dbProviderFactory, DbGenerator dbGenerator)
         {
-            this.ConnectionName = connectionName;
-            var connectionSettings = System.Configuration.ConfigurationManager.ConnectionStrings[this.ConnectionName];
-            if (connectionSettings == null)
+            this.Initialize(connectionString, dbProviderFactory, dbGenerator);
+        }
+
+        protected internal DbEntity(string connectionString, string providerName, DbGenerator dbGenerator)
+        {
+            if (string.IsNullOrWhiteSpace(providerName))
+            {
+                throw new ArgumentNullException("providerName");
+            }
+            this.Initialize(connectionString, DbProviderFactories.GetFactory(providerName), dbGenerator);
+        }
+
+        internal DbEntity(string connectionName, DbGenerator dbGenerator)
+        {
+            if (string.IsNullOrWhiteSpace(connectionName))
+            {
+                throw new ArgumentNullException("connectionName");
+            }
+            var connectionSetting = System.Configuration.ConfigurationManager.ConnectionStrings[connectionName];
+            if (connectionSetting == null)
             {
                 throw new ArgumentOutOfRangeException("connectionName");
             }
-            this.ConnectionString = connectionSettings.ConnectionString;
-            this.provider = DbProviderFactories.GetFactory(connectionSettings.ProviderName);
+            if (string.IsNullOrWhiteSpace(connectionSetting.ProviderName))
+            {
+                throw new ArgumentNullException("providerName");
+            }
+            this.Initialize(connectionSetting.ConnectionString, DbProviderFactories.GetFactory(connectionSetting.ProviderName), dbGenerator);
         }
 
-        protected internal DbEntity(string connectionString, string providerName)
+        private void Initialize(string connectionString, DbProviderFactory dbProviderFactory, DbGenerator dbGenerator)
         {
-            this.ConnectionName = string.Empty;
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentNullException("connectionString");
+            }
+            if (dbProviderFactory == null)
+            {
+                throw new ArgumentNullException("dbProviderFactory");
+            }
+            if (dbGenerator == null)
+            {
+                throw new ArgumentNullException("dbGenerator");
+            }
             this.ConnectionString = connectionString;
-            this.provider = DbProviderFactories.GetFactory(providerName);
+            this.DbProviderFactory = dbProviderFactory;
+            this.DbGenerator = dbGenerator;
+            this.DbGenerator.DbEntity = this;
         }
 
         public string ConnectionString { private set; get; }
-        public string ConnectionName { private set; get; }
-        //TODO get "@" on ms-sql / "?" on mysql / ":" on oracle 
-        public virtual string ParameterPrefix { get { return "@"; } }
 
-        private DbProviderFactory provider;
-        protected virtual DbProviderFactory DbProviderFactory
-        {
-            get { return this.provider; }
-        }
+        public DbGenerator DbGenerator { private set; get; }
+
+        protected DbProviderFactory DbProviderFactory { private set; get; }
 
         public virtual DbConnection CreateDbConnection()
         {
