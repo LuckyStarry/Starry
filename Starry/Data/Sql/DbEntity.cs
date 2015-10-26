@@ -8,21 +8,21 @@ namespace Starry.Data.Sql
 {
     public class DbEntity
     {
-        protected internal DbEntity(string connectionString, DbProviderFactory dbProviderFactory, DbGenerator dbGenerator)
+        protected internal DbEntity(string connectionString, DbProviderFactory dbProviderFactory)
         {
-            this.Initialize(connectionString, dbProviderFactory, dbGenerator);
+            this.Initialize(connectionString, dbProviderFactory);
         }
 
-        protected internal DbEntity(string connectionString, string providerName, DbGenerator dbGenerator)
+        protected internal DbEntity(string connectionString, string providerName)
         {
             if (string.IsNullOrWhiteSpace(providerName))
             {
                 throw new ArgumentNullException("providerName");
             }
-            this.Initialize(connectionString, DbProviderFactories.GetFactory(providerName), dbGenerator);
+            this.Initialize(connectionString, DbProviderFactories.GetFactory(providerName));
         }
 
-        internal DbEntity(string connectionName, DbGenerator dbGenerator)
+        internal DbEntity(string connectionName)
         {
             if (string.IsNullOrWhiteSpace(connectionName))
             {
@@ -37,10 +37,10 @@ namespace Starry.Data.Sql
             {
                 throw new ArgumentNullException("providerName");
             }
-            this.Initialize(connectionSetting.ConnectionString, DbProviderFactories.GetFactory(connectionSetting.ProviderName), dbGenerator);
+            this.Initialize(connectionSetting.ConnectionString, DbProviderFactories.GetFactory(connectionSetting.ProviderName));
         }
 
-        private void Initialize(string connectionString, DbProviderFactory dbProviderFactory, DbGenerator dbGenerator)
+        private void Initialize(string connectionString, DbProviderFactory dbProviderFactory)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
             {
@@ -50,19 +50,11 @@ namespace Starry.Data.Sql
             {
                 throw new ArgumentNullException("dbProviderFactory");
             }
-            if (dbGenerator == null)
-            {
-                throw new ArgumentNullException("dbGenerator");
-            }
             this.ConnectionString = connectionString;
             this.DbProviderFactory = dbProviderFactory;
-            this.DbGenerator = dbGenerator;
-            this.DbGenerator.DbEntity = this;
         }
 
         public string ConnectionString { private set; get; }
-
-        public DbGenerator DbGenerator { private set; get; }
 
         protected DbProviderFactory DbProviderFactory { private set; get; }
 

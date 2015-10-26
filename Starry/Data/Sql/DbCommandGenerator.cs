@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Starry.Data.Sql
 {
-    public abstract class DbGenerator
+    public abstract class DbCommandGenerator
     {
-        public DbGenerator()
+        public DbCommandGenerator()
         {
             this.ParameterNameNumFrom = "numfrom";
             this.ParameterNameNumTo = "numto";
@@ -19,12 +19,12 @@ namespace Starry.Data.Sql
         public string ParameterNameNumTo { set; get; }
         public DbEntity DbEntity { internal set; get; }
 
-        public string CreatePagedListSqlCommandText(string selectText)
+        public DbCommand CreateDbCommandForGetPagedList(string selectText)
         {
-            return this.CreatePagedListSqlCommandText(selectText, null);
+            return this.CreateDbCommandForGetPagedList(selectText, null);
         }
 
-        public abstract string CreatePagedListSqlCommandText(string selectText, string order);
+        public abstract DbCommand CreateDbCommandForGetPagedList(string selectText, string order);
 
         public virtual DbCommand CreateDbCommandForAddEntity<TEntity>(TEntity entity)
         {

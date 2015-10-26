@@ -9,12 +9,22 @@ namespace Starry.Data.Sql
 {
     public class DbContext
     {
-        public DbContext(DbEntity dbEntity)
+        public DbContext(DbEntity dbEntity, DbCommandGenerator dbCommandGenerator)
         {
+            if (dbEntity == null)
+            {
+                throw new ArgumentNullException("dbEntity");
+            }
+            if (dbCommandGenerator == null)
+            {
+                throw new ArgumentNullException("dbCommandGenerator");
+            }
             this.DbEntity = dbEntity;
+            this.DbCommandGenerator = dbCommandGenerator;
         }
 
         public DbEntity DbEntity { private set; get; }
+        public DbCommandGenerator DbCommandGenerator { private set; get; }
 
         protected virtual T DbHandle<TDbCommand, T>(TDbCommand dbCommand, Func<TDbCommand, T> dbHandle)
             where TDbCommand : DbCommand

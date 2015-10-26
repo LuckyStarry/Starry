@@ -47,8 +47,9 @@
     <Compile Include="Data\Sql\DbContext.cs" />
     <Compile Include="Data\Sql\Attributes\DbPrimaryKeyAttribute.cs" />
     <Compile Include="Data\Sql\DbEntity.cs" />
-    <Compile Include="Data\Sql\DbEntityFactory.cs" />
-    <Compile Include="Data\Sql\DbGenerator.cs" />
+    <Compile Include="Data\Sql\DbContextFactory.cs" />
+    <Compile Include="Data\Sql\DbEntityFactoryDefault.cs" />
+    <Compile Include="Data\Sql\DbCommandGenerator.cs" />
     <Compile Include="Data\Sql\DbMapping.cs" />
     <Compile Include="Data\Sql\DbMappingCollectionDefault.cs" />
     <Compile Include="Data\Sql\DbTable.cs" />

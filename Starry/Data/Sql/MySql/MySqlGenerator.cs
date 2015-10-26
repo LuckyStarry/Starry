@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 
 namespace Starry.Data.Sql.MySql
 {
-    public class MySqlGenerator : DbGenerator
+    public class MySqlGenerator : DbCommandGenerator
     {
         public override string ParameterNamePrefix { get { return "?"; } }
 
-        public override string CreatePagedListSqlCommandText(string selectText, string order)
+        public override DbCommand CreateDbCommandForGetPagedList(string selectText, string order)
         {
             var sqlText = new StringBuilder();
             sqlText.AppendFormat(@"
@@ -24,7 +25,7 @@ SELECT COUNT(1)
 ", order);
             }
             sqlText.AppendFormat(" LIMIT {0}{1},{0}{2}", this.ParameterNamePrefix, this.ParameterNameNumFrom, this.ParameterNameNumTo);
-            return sqlText.ToString();
+            return this.DbEntity.CreateDbCommand(sqlText.ToString());
         }
     }
 }

@@ -7,9 +7,8 @@ namespace Starry.Data.Sql
 {
     public class DbMapping
     {
-        public string TableName { set; get; }
-        public bool DbColumnOnly { set; get; }
-
-        public DbColumn[] Columns { set; get; }
+        public string TableName { internal set; get; }
+        public bool DbColumnOnly { internal set; get; }
+        public DbColumn[] Columns { internal set; get; }
     }
 }
