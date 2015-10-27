@@ -26,14 +26,13 @@ namespace Starry.Data.Sql
 
         public virtual IEnumerable<TEntity> GetList(object conditions = null, object order = null)
         {
-            var dbCommand = this.DbContext.DbCommandGenerator.CreateDbCommandForGetList<TEntity>(conditions, order);
-            var dataTable = this.DbContext.ExecuteDataTable(dbCommand);
-            return dataTable.ToList<TEntity>();
+            return this.DbContext.GetList<TEntity>(conditions, order);
         }
 
         public virtual int AddEntity(TEntity entity)
         {
-            var dbCommand = this.DbContext.DbCommandGenerator.CreateDbCommandForAddEntity(entity);
+            var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForAddEntity(entity);
+            var dbCommand = this.DbContext.DbEntity.CreateDbCommand(dbCommandSource);
             return this.DbContext.ExecuteNonQuery(dbCommand);
         }
     }

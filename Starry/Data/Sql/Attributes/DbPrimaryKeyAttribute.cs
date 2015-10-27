@@ -6,8 +6,8 @@ using System.Text;
 namespace Starry.Data.Sql
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class DbPrimaryKeyAttribute : Attribute
+    public class DbPrimaryKeyAttribute : DbColumnAttribute
     {
-
+        public bool IngoreOnInsert { set; get; }
     }
 }

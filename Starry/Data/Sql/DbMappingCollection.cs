@@ -52,7 +52,6 @@ namespace Starry.Data.Sql
                 }
             }
 
-            var pkCount = 0;
             var columns = new List<DbColumn>();
             var entityProperties = type.GetProperties();
             foreach (var propertyInfo in entityProperties)
@@ -60,6 +59,7 @@ namespace Starry.Data.Sql
                 if (propertyInfo.CanRead && propertyInfo.CanWrite)
                 {
                     var isPK = false;
+                    var ignoreOnInsert = false;
                     var columnName = propertyInfo.Name;
                     var attributes = propertyInfo.GetCustomAttributes(true);
                     if (attributes != null && attributes.Any())
@@ -68,22 +68,31 @@ namespace Starry.Data.Sql
                         {
                             continue;
                         }
-                        if (attributes.Any(attr => attr is DbPrimaryKeyAttribute))
+                        var pkAttr = attributes.FirstOrDefault(attr => attr is DbPrimaryKeyAttribute);
+                        if (pkAttr != null)
                         {
-                            isPK = true;
-                            pkCount++;
-                        }
-                        var columnAttr = attributes.FirstOrDefault(attr => attr is DbColumnAttribute);
-                        if (columnAttr == null && mapping.DbColumnOnly)
-                        {
-                            continue;
-                        }
-                        if (columnAttr != null)
-                        {
-                            var attr = columnAttr as DbColumnAttribute;
+                            var attr = pkAttr as DbPrimaryKeyAttribute;
                             if (!string.IsNullOrWhiteSpace(attr.ColumnName))
                             {
                                 columnName = attr.ColumnName.Trim();
+                            }
+                            ignoreOnInsert = attr.IngoreOnInsert;
+                            isPK = true;
+                        }
+                        else
+                        {
+                            var columnAttr = attributes.FirstOrDefault(attr => attr is DbColumnAttribute);
+                            if (columnAttr == null && mapping.DbColumnOnly)
+                            {
+                                continue;
+                            }
+                            if (columnAttr != null)
+                            {
+                                var attr = columnAttr as DbColumnAttribute;
+                                if (!string.IsNullOrWhiteSpace(attr.ColumnName))
+                                {
+                                    columnName = attr.ColumnName.Trim();
+                                }
                             }
                         }
                     }
@@ -91,13 +100,8 @@ namespace Starry.Data.Sql
                     {
                         continue;
                     }
-                    columns.Add(new DbColumn { PropertyInfo = propertyInfo, ColumnName = columnName, IsPrimaryKey = isPK });
+                    columns.Add(new DbColumn { PropertyInfo = propertyInfo, ColumnName = columnName, IsPrimaryKey = isPK, IngoreOnInsert = ignoreOnInsert });
                 }
-            }
-            if (pkCount != 1)
-            {
-                throw new ArgumentException(
-                    string.Format("The table must have only one primary key, table [{0}] has {1}", mapping.TableName, pkCount), "TEntity");
             }
             if (columns.Count == 0)
             {

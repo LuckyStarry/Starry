@@ -9,22 +9,19 @@ namespace Starry.Data.Sql
 {
     public class DbContext
     {
-        public DbContext(DbEntity dbEntity, DbCommandGenerator dbCommandGenerator)
+        public DbContext(DbEntity dbEntity)
         {
             if (dbEntity == null)
             {
                 throw new ArgumentNullException("dbEntity");
             }
-            if (dbCommandGenerator == null)
-            {
-                throw new ArgumentNullException("dbCommandGenerator");
-            }
             this.DbEntity = dbEntity;
-            this.DbCommandGenerator = dbCommandGenerator;
+            this.dbAssistor = DbAssistorFactory.Default.CreateDbAssistor(this.DbEntity);
         }
 
+        private DbAssistor dbAssistor;
         public DbEntity DbEntity { private set; get; }
-        public DbCommandGenerator DbCommandGenerator { private set; get; }
+        public virtual DbAssistor DbAssistor { get { return this.dbAssistor; } }
 
         protected virtual T DbHandle<TDbCommand, T>(TDbCommand dbCommand, Func<TDbCommand, T> dbHandle)
             where TDbCommand : DbCommand
@@ -54,33 +51,33 @@ namespace Starry.Data.Sql
             }
         }
 
-        public int ExecuteNonQuery(DbCommand dbCommand)
+        protected internal int ExecuteNonQuery(DbCommand dbCommand)
         {
             return this.DbHandle(dbCommand, cmd => cmd.ExecuteNonQuery());
         }
 
-        public object ExecuteScalar(DbCommand dbCommand)
+        protected internal object ExecuteScalar(DbCommand dbCommand)
         {
             return this.DbHandle(dbCommand, cmd => cmd.ExecuteScalar());
         }
 
-        public T ExecuteScalar<T>(DbCommand dbCommand)
+        protected internal T ExecuteScalar<T>(DbCommand dbCommand)
         {
             return this.ExecuteScalar(dbCommand, obj => (T)Convert.ChangeType(obj, typeof(T)));
         }
 
-        public T ExecuteScalar<T>(DbCommand dbCommand, Func<object, T> convert)
+        protected internal T ExecuteScalar<T>(DbCommand dbCommand, Func<object, T> convert)
         {
             var objVal = this.ExecuteScalar(dbCommand);
             return convert.Invoke(objVal);
         }
 
-        public virtual DataSet ExecuteDataSet(DbCommand dbCommand)
+        protected internal virtual DataSet ExecuteDataSet(DbCommand dbCommand)
         {
             return this.DbHandle(dbCommand, cmd => this.DbEntity.CreateDbDataAdapter(cmd).GetData());
         }
 
-        public virtual DataTable ExecuteDataTable(DbCommand dbCommand)
+        protected internal virtual DataTable ExecuteDataTable(DbCommand dbCommand)
         {
             return this.DbHandle(dbCommand, cmd =>
             {
@@ -126,6 +123,15 @@ namespace Starry.Data.Sql
         {
             var command = this.DbEntity.CreateDbCommand(commandText);
             return this.ExecuteDataTable(command);
+        }
+
+        public virtual IEnumerable<TEntity> GetList<TEntity>(object conditions = null, object order = null)
+            where TEntity : new()
+        {
+            var dbCommandSource = this.DbAssistor.CreateDbCommandForGetList<TEntity>(conditions, order);
+            var dbCommand = this.DbEntity.CreateDbCommand(dbCommandSource);
+            var dataTable = this.ExecuteDataTable(dbCommand);
+            return dataTable.ToList<TEntity>();
         }
     }
 }

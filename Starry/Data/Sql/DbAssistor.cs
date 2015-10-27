@@ -6,27 +6,26 @@ using System.Text;
 
 namespace Starry.Data.Sql
 {
-    public abstract class DbCommandGenerator
+    public abstract class DbAssistor
     {
-        public DbCommandGenerator()
+        public DbAssistor()
         {
-            this.ParameterNameNumFrom = "numfrom";
-            this.ParameterNameNumTo = "numto";
+            this.ParameterNameRecordFrom = "RecordFrom";
+            this.ParameterNameRecordTo = "RecordTo";
         }
 
-        public abstract string ParameterNamePrefix { get; }
-        public string ParameterNameNumFrom { set; get; }
-        public string ParameterNameNumTo { set; get; }
-        public DbEntity DbEntity { internal set; get; }
+        public abstract string ParameterSymbol { get; }
+        public string ParameterNameRecordFrom { set; get; }
+        public string ParameterNameRecordTo { set; get; }
 
-        public DbCommand CreateDbCommandForGetPagedList(string selectText)
+        public DbCommandSource CreateDbCommandForGetPagedList(string selectText)
         {
             return this.CreateDbCommandForGetPagedList(selectText, null);
         }
 
-        public abstract DbCommand CreateDbCommandForGetPagedList(string selectText, string order);
+        public abstract DbCommandSource CreateDbCommandForGetPagedList(string selectText, string order);
 
-        public virtual DbCommand CreateDbCommandForAddEntity<TEntity>(TEntity entity)
+        public virtual DbCommandSource CreateDbCommandForAddEntity<TEntity>(TEntity entity)
         {
             if (entity == null)
             {
@@ -38,28 +37,30 @@ namespace Starry.Data.Sql
                 throw new ArgumentException(string.Format("Cannot get the mapping of type {0}", typeof(TEntity).FullName), "TEntity");
             }
 
-            var dbCommand = this.DbEntity.CreateDbCommand();
+            var dbCommandSource = new DbCommandSource();
             var sqlText = new StringBuilder();
             sqlText.AppendLine("INSERT INTO {0}", mapping.TableName);
             var columns = new List<string>();
             foreach (var column in mapping.Columns)
             {
                 var objVal = column.PropertyInfo.GetValue(entity, null);
-                if (column.IsPrimaryKey)
+                if (column.IngoreOnInsert)
                 {
                     continue;
                 }
                 columns.Add(column.ColumnName);
-                dbCommand.AppendParameter(string.Format("{0}{1}", this.ParameterNamePrefix, column.ColumnName), objVal);
+                dbCommandSource.Parameters.Add(string.Format("{0}{1}", this.ParameterSymbol, column.ColumnName), objVal);
             }
             sqlText.AppendLine("            ({0})", string.Join(", ", columns));
-            sqlText.AppendLine("     VALUES ({0})", string.Join(", ", columns.Select(c => this.ParameterNamePrefix + c)));
+            sqlText.AppendLine("     VALUES ({0})", string.Join(", ", columns.Select(c => this.ParameterSymbol + c)));
 
-            dbCommand.CommandText = sqlText.ToString();
-            return dbCommand;
+            dbCommandSource.CommandText = sqlText.ToString();
+            return dbCommandSource;
         }
 
-        public virtual DbCommand CreateDbCommandForGetList<TEntity>(object conditions = null, object order = null)
+        public abstract DbCommandSource CreateDbCommandForAddEntityAndGetRecordID<TEntity>(TEntity entity);
+
+        public virtual DbCommandSource CreateDbCommandForGetList<TEntity>(object conditions = null, object order = null)
         {
             var mapping = DbMappingCollection.Default.GetDbMapping(typeof(TEntity));
             if (mapping == null)
@@ -71,8 +72,7 @@ namespace Starry.Data.Sql
             sqlText.AppendLine("SELECT {0}", string.Join(", ", mapping.Columns.Select(c => c.ColumnName)));
             sqlText.AppendLine("  FROM {0}", mapping.TableName);
 
-            var dbCommand = this.DbEntity.CreateDbCommand();
-            var paramPrefix = this.ParameterNamePrefix;
+            var dbCommandSource = new DbCommandSource();
             if (conditions != null)
             {
                 if (conditions is string)
@@ -94,8 +94,8 @@ namespace Starry.Data.Sql
                                 var objArray = objVal as System.Array;
                                 for (var i = 0; i < objArray.Length; i++)
                                 {
-                                    array.Add(string.Format("{0} = {2}{0}{1}", dbParamName, i, paramPrefix));
-                                    dbCommand.AppendParameter(string.Format("{0}{1}", dbParamName, i), objArray.GetValue(i));
+                                    array.Add(string.Format("{0} = {2}{0}{1}", dbParamName, i, this.ParameterSymbol));
+                                    dbCommandSource.Parameters.Add(string.Format("{0}{1}", dbParamName, i), objArray.GetValue(i));
                                 }
                                 if (array != null && array.Any())
                                 {
@@ -104,8 +104,8 @@ namespace Starry.Data.Sql
                             }
                             else
                             {
-                                listConditions.Add(string.Format("{0} = {1}{0}", dbParamName, paramPrefix));
-                                dbCommand.AppendParameter(dbParamName, objVal);
+                                listConditions.Add(string.Format("{0} = {1}{0}", dbParamName, this.ParameterSymbol));
+                                dbCommandSource.Parameters.Add(dbParamName, objVal);
                             }
                         }
                     }
@@ -146,8 +146,8 @@ namespace Starry.Data.Sql
                     }
                 }
             }
-            dbCommand.CommandText = sqlText.ToString();
-            return dbCommand;
+            dbCommandSource.CommandText = sqlText.ToString();
+            return dbCommandSource;
         }
     }
 }

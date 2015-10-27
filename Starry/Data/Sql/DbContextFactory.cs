@@ -7,7 +7,7 @@ namespace Starry.Data.Sql
 {
     public class DbContextFactory
     {
-        private IDictionary<string, DbCommandGenerator> dbCommandGenerators = new Dictionary<string, DbCommandGenerator>();
+        private IDictionary<string, DbAssistor> dbCommandGenerators = new Dictionary<string, DbAssistor>();
 
         public static DbContextFactory Default { get { return DbEntityFactoryDefault.Instance; } }
 
@@ -27,7 +27,7 @@ namespace Starry.Data.Sql
             providerName = (providerName ?? string.Empty).ToLower();
             if (dbCommandGenerators.ContainsKey(providerName))
             {
-                return new DbContext(dbEntity, dbCommandGenerators[providerName]);
+                return new DbContext(dbEntity);
             }
             else
             {
@@ -35,7 +35,7 @@ namespace Starry.Data.Sql
             }
         }
 
-        public void Register(string providerName, DbCommandGenerator dbCommandGenerator)
+        public void Register(string providerName, DbAssistor dbCommandGenerator)
         {
             if (string.IsNullOrWhiteSpace(providerName))
             {

@@ -17,5 +17,6 @@ namespace Starry.Data.Sql
         public string ColumnName { set; get; }
         public DbType DbType { set; get; }
         public bool IsPrimaryKey { set; get; }
+        public bool IngoreOnInsert { set; get; }
     }
 }

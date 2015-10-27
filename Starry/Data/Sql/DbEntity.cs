@@ -8,21 +8,7 @@ namespace Starry.Data.Sql
 {
     public class DbEntity
     {
-        protected internal DbEntity(string connectionString, DbProviderFactory dbProviderFactory)
-        {
-            this.Initialize(connectionString, dbProviderFactory);
-        }
-
-        protected internal DbEntity(string connectionString, string providerName)
-        {
-            if (string.IsNullOrWhiteSpace(providerName))
-            {
-                throw new ArgumentNullException("providerName");
-            }
-            this.Initialize(connectionString, DbProviderFactories.GetFactory(providerName));
-        }
-
-        internal DbEntity(string connectionName)
+        public DbEntity(string connectionName)
         {
             if (string.IsNullOrWhiteSpace(connectionName))
             {
@@ -33,28 +19,40 @@ namespace Starry.Data.Sql
             {
                 throw new ArgumentOutOfRangeException("connectionName");
             }
-            if (string.IsNullOrWhiteSpace(connectionSetting.ProviderName))
+            this.Initialize(connectionSetting.ConnectionString, connectionSetting.ProviderName);
+        }
+
+        public DbEntity(string connectionString, string providerName)
+        {
+            if (string.IsNullOrWhiteSpace(providerName))
             {
                 throw new ArgumentNullException("providerName");
             }
-            this.Initialize(connectionSetting.ConnectionString, DbProviderFactories.GetFactory(connectionSetting.ProviderName));
+            this.Initialize(connectionString, providerName);
         }
 
-        private void Initialize(string connectionString, DbProviderFactory dbProviderFactory)
+        private void Initialize(string connectionString, string providerName)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
             {
                 throw new ArgumentNullException("connectionString");
             }
+            if (string.IsNullOrWhiteSpace(providerName))
+            {
+                throw new ArgumentNullException("providerName");
+            }
+            var dbProviderFactory = DbProviderFactories.GetFactory(providerName);
             if (dbProviderFactory == null)
             {
-                throw new ArgumentNullException("dbProviderFactory");
+                throw new ArgumentException("Generate DbProviderFactory Failed", "providerName");
             }
             this.ConnectionString = connectionString;
+            this.ProviderName = providerName;
             this.DbProviderFactory = dbProviderFactory;
         }
 
         public string ConnectionString { private set; get; }
+        public string ProviderName { private set; get; }
 
         protected DbProviderFactory DbProviderFactory { private set; get; }
 
@@ -103,6 +101,16 @@ namespace Starry.Data.Sql
             var dbAdapter = this.DbProviderFactory.CreateDataAdapter();
             dbAdapter.SelectCommand = selectCommand;
             return dbAdapter;
+        }
+
+        public virtual DbCommand CreateDbCommand(DbCommandSource dbCommandSource)
+        {
+            var dbCommand = this.CreateDbCommand(dbCommandSource.CommandText);
+            foreach (var parameter in dbCommandSource.Parameters)
+            {
+                dbCommand.AppendParameter(parameter.Key, parameter.Value);
+            }
+            return dbCommand;
         }
     }
 }
