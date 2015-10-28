@@ -16,13 +16,10 @@ namespace Starry.Data.Sql
             {
                 throw new ArgumentNullException("dbContext");
             }
-            this.DbMapping = DbMappingCollection.Default.GetDbMapping(typeof(TEntity));
-            this.TableName = this.DbMapping.TableName;
+            this.DbContext = dbContext;
         }
 
-        public string TableName { private set; get; }
         public DbContext DbContext { private set; get; }
-        public DbMapping DbMapping { private set; get; }
 
         public virtual IEnumerable<TEntity> GetList(object conditions = null, object order = null)
         {

@@ -3,20 +3,30 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using Starry.Data.Sql.Builder;
 
 namespace Starry.Data.Sql
 {
     public abstract class DbAssistor
     {
         public DbAssistor()
+            : this(DbMappingCollection.Default) { }
+
+        public DbAssistor(DbMappingCollection dpMappings)
         {
+            if (dpMappings == null)
+            {
+                throw new ArgumentNullException("dpMappings");
+            }
             this.ParameterNameRecordFrom = "RecordFrom";
             this.ParameterNameRecordTo = "RecordTo";
+            this.DbMappings = dpMappings;
         }
 
         public abstract string ParameterSymbol { get; }
         public string ParameterNameRecordFrom { set; get; }
         public string ParameterNameRecordTo { set; get; }
+        public DbMappingCollection DbMappings { private set; get; }
 
         public DbCommandSource CreateDbCommandForGetPagedList(string selectText)
         {
@@ -31,7 +41,7 @@ namespace Starry.Data.Sql
             {
                 throw new ArgumentNullException("entity");
             }
-            var mapping = DbMappingCollection.Default.GetDbMapping(typeof(TEntity));
+            var mapping = this.DbMappings.GetDbMapping(typeof(TEntity));
             if (mapping == null)
             {
                 throw new ArgumentException(string.Format("Cannot get the mapping of type {0}", typeof(TEntity).FullName), "TEntity");
@@ -49,7 +59,7 @@ namespace Starry.Data.Sql
                     continue;
                 }
                 columns.Add(column.ColumnName);
-                dbCommandSource.Parameters.Add(string.Format("{0}{1}", this.ParameterSymbol, column.ColumnName), objVal);
+                dbCommandSource.Parameters.Add(column.ColumnName, objVal);
             }
             sqlText.AppendLine("            ({0})", string.Join(", ", columns));
             sqlText.AppendLine("     VALUES ({0})", string.Join(", ", columns.Select(c => this.ParameterSymbol + c)));
@@ -60,9 +70,78 @@ namespace Starry.Data.Sql
 
         public abstract DbCommandSource CreateDbCommandForAddEntityAndGetRecordID<TEntity>(TEntity entity);
 
+        protected DbCommandSource GetDbConditions(object conditions)
+        {
+            if (conditions == null)
+            {
+                return null;
+            }
+            if (conditions is string)
+            {
+                return new DbCommandSource { CommandText = (string)conditions };
+            }
+
+            var condition = default(Builder.Conditions.IDbCondition);
+            foreach (var pCondition in conditions.GetType().GetProperties())
+            {
+                var subCondition = default(Builder.Conditions.IDbCondition);
+                if (pCondition.CanRead)
+                {
+                    var dbParamName = pCondition.Name;
+                    var objVal = pCondition.GetValue(conditions, null);
+                    if (objVal is System.Array)
+                    {
+                        var array = new List<string>();
+                        var objArray = objVal as System.Array;
+                        for (var i = 0; i < objArray.Length; i++)
+                        {
+                            var content = new Builder.Conditions.DbConditionContent();
+                            content.ConditionString = string.Format("{0} = {2}{0}{1}", dbParamName, i, this.ParameterSymbol);
+                            content.Parameters.Add(string.Format("{0}{1}", dbParamName, i), objArray.GetValue(i));
+                            if (subCondition == null)
+                            {
+                                subCondition = content;
+                            }
+                            else
+                            {
+                                subCondition = subCondition.Or(content);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var content = new Builder.Conditions.DbConditionContent();
+                        content.ConditionString = string.Format("{0} = {1}{0}", dbParamName, this.ParameterSymbol);
+                        content.Parameters.Add(dbParamName, objVal);
+
+                        subCondition = content;
+                    }
+                }
+                if (subCondition != null)
+                {
+                    if (condition == null)
+                    {
+                        condition = subCondition;
+                    }
+                    else
+                    {
+                        condition = condition.And(subCondition);
+                    }
+                }
+            }
+            if (condition == null)
+            {
+                return null;
+            }
+            else
+            {
+                return condition.Generate();
+            }
+        }
+
         public virtual DbCommandSource CreateDbCommandForGetList<TEntity>(object conditions = null, object order = null)
         {
-            var mapping = DbMappingCollection.Default.GetDbMapping(typeof(TEntity));
+            var mapping = this.DbMappings.GetDbMapping(typeof(TEntity));
             if (mapping == null)
             {
                 throw new ArgumentException(string.Format("Cannot get the mapping of type {0}", typeof(TEntity).FullName), "TEntity");
@@ -73,6 +152,14 @@ namespace Starry.Data.Sql
             sqlText.AppendLine("  FROM {0}", mapping.TableName);
 
             var dbCommandSource = new DbCommandSource();
+            var dbCommandSourceForCondition = this.GetDbConditions(conditions);
+            if (dbCommandSourceForCondition != null)
+            {
+                sqlText.AppendLine(" WHERE {0}", dbCommandSourceForCondition.CommandText);
+                foreach (var param in dbCommandSourceForCondition.Parameters)
+                {
+                }
+            }
             if (conditions != null)
             {
                 if (conditions is string)

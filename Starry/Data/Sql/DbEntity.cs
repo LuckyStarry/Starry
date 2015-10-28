@@ -52,6 +52,7 @@ namespace Starry.Data.Sql
         }
 
         public string ConnectionString { private set; get; }
+
         public string ProviderName { private set; get; }
 
         protected DbProviderFactory DbProviderFactory { private set; get; }

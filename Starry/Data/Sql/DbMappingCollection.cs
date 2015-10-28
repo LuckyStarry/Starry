@@ -25,7 +25,10 @@ namespace Starry.Data.Sql
                         {
                             this.Register(type, mapping);
                         }
-                        return null;
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
             }
