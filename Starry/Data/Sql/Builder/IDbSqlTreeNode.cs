@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Starry.Data.Assistant
+namespace Starry.Data.Sql.Builder
 {
-    public static partial class ObjectExtend
+    public interface IDbSqlTreeNode
     {
+        DbCommandSource Generate();
     }
 }
