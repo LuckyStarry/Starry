@@ -9,6 +9,8 @@ namespace Starry.Data.Sql
 {
     public class DbContext
     {
+        public DbContext(string connectionName) : this(new DbEntity(connectionName)) { }
+        public DbContext(string connectionString, string providerName) : this(new DbEntity(connectionString, providerName)) { }
         public DbContext(DbEntity dbEntity)
         {
             if (dbEntity == null)

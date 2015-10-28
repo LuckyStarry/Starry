@@ -40,9 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Sql\Builder\CommandTypes\DbCommandTypeSelect.cs" />
-    <Compile Include="Data\Sql\Builder\CommandTypes\DbCommandType.cs" />
-    <Compile Include="Data\Sql\Builder\CommandTypes\IDbCommandType.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\DbConditionContent.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperation.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationOr.cs" />
@@ -51,7 +48,9 @@
     <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationMonadic.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationAnd.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\DbCondition.cs" />
-    <Compile Include="Data\Sql\Builder\DbSqlTreeNode.cs" />
+    <Compile Include="Data\Sql\Builder\DbSqlTreeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Data\Sql\Builder\IDbCondition.Not.cs" />
     <Compile Include="Data\Sql\Builder\IDbCondition.Or.cs" />
     <Compile Include="Data\Sql\Builder\IDbCondition.And.cs" />
