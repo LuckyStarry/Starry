@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -39,13 +40,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Sql\Builder\Conditions\DbConditionContent.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperation.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationOr.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationBinary.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationNot.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationMonadic.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationAnd.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\DbCondition.cs" />
+    <Compile Include="Data\Sql\Builder\DbSqlTreeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\Sql\Builder\IDbCondition.Not.cs" />
+    <Compile Include="Data\Sql\Builder\IDbCondition.Or.cs" />
+    <Compile Include="Data\Sql\Builder\IDbCondition.And.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\IDbConditionOperation.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\IDbConditionContent.cs" />
+    <Compile Include="Data\Sql\Attributes\DbTableAttribute.cs" />
+    <Compile Include="Data\Sql\Attributes\DbIgnoreAttribute.cs" />
+    <Compile Include="Data\Sql\Attributes\DbColumnAttribute.cs" />
+    <Compile Include="Data\Sql\Builder\IDbSqlTreeNode.cs" />
+    <Compile Include="Data\Sql\DataTable.ToList.cs" />
+    <Compile Include="Data\Sql\DbAssistorFactory.cs" />
+    <Compile Include="Data\Sql\DbAssistorFactoryDefault.cs" />
+    <Compile Include="Data\Sql\DbColumn.cs" />
+    <Compile Include="Data\Sql\DbCommandSource.cs" />
+    <Compile Include="Data\Sql\DbContext.cs" />
+    <Compile Include="Data\Sql\Attributes\DbPrimaryKeyAttribute.cs" />
+    <Compile Include="Data\Sql\DbEntity.cs" />
+    <Compile Include="Data\Sql\DbAssistor.cs" />
+    <Compile Include="Data\Sql\DbMapping.cs" />
+    <Compile Include="Data\Sql\DbMappingCollectionDefault.cs" />
+    <Compile Include="Data\Sql\DbTable.cs" />
+    <Compile Include="Data\Sql\DbMappingCollection.cs" />
+    <Compile Include="Data\Sql\Extend\DbCommand.AppendParameter.cs" />
+    <Compile Include="Data\Sql\Extend\DbDataAdapter.GetData.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\IDbCondition.cs" />
+    <Compile Include="Data\Sql\MySql\MySqlAssistor.cs" />
     <Compile Include="Services\Action.ToCustomizeModule.cs" />
     <Compile Include="Services\CustomizeHandler.cs" />
-    <Compile Include="Data\Assistant\DbContext.cs" />
     <Compile Include="Extend\IEnumerable.ToDataTable.cs" />
-    <Compile Include="Data\Assistant\DbTable.cs" />
-    <Compile Include="Data\Assistant\IDbContext.cs" />
-    <Compile Include="Data\Assistant\IDbTable.cs" />
     <Compile Include="Extend\String.Convert.cs" />
     <Compile Include="Extend\String.ToString.cs" />
     <Compile Include="ICloneable.cs" />
