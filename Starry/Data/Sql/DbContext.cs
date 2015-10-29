@@ -133,7 +133,7 @@ namespace Starry.Data.Sql
             var dbCommandSource = this.DbAssistor.CreateDbCommandForGetList<TEntity>(conditions, order);
             var dbCommand = this.DbEntity.CreateDbCommand(dbCommandSource);
             var dataTable = this.ExecuteDataTable(dbCommand);
-            return dataTable.ToList<TEntity>();
+            return dataTable.ToList<TEntity>(this.DbAssistor.DbMappings.GetDbMapping(typeof(TEntity)));
         }
     }
 }

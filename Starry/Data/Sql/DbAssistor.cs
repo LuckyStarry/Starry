@@ -167,7 +167,7 @@ namespace Starry.Data.Sql
             }
             if (columns != null && columns.Any())
             {
-                sqlText.AppendLine(" WHERE {0}", string.Join(", ", columns));
+                sqlText.AppendLine(" WHERE {0}", string.Join(" AND ", columns));
             }
             else
             {
@@ -265,7 +265,7 @@ namespace Starry.Data.Sql
             }
             if (columns != null && columns.Any())
             {
-                sqlText.AppendLine(" WHERE {0}", string.Join(", ", columns));
+                sqlText.AppendLine(" WHERE {0}", string.Join(" AND ", columns));
             }
             else
             {

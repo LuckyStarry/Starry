@@ -60,6 +60,7 @@
     <Compile Include="Data\Sql\Attributes\DbIgnoreAttribute.cs" />
     <Compile Include="Data\Sql\Attributes\DbColumnAttribute.cs" />
     <Compile Include="Data\Sql\Builder\IDbSqlTreeNode.cs" />
+    <Compile Include="Data\Sql\DataTable.ToList.cs" />
     <Compile Include="Data\Sql\DbAssistorFactory.cs" />
     <Compile Include="Data\Sql\DbAssistorFactoryDefault.cs" />
     <Compile Include="Data\Sql\DbColumn.cs" />
