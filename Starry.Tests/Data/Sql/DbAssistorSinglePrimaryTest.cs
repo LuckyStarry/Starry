@@ -46,6 +46,12 @@ CREATE TABLE `TestTable` (
 
             var result = dbContext.TestTable.DeleteEntity(entity);
             Assert.AreEqual(result, 1, "DELETE ENTITY ERROR");
+
+            dbContext.TestTable.AddEntity(new TestEntity { Content = "TEST1", CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now });
+            dbContext.TestTable.AddEntity(new TestEntity { Content = "TEST2", CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now });
+            dbContext.TestTable.AddEntity(new TestEntity { Content = "TEST3", CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now });
+            dbContext.TestTable.AddEntity(new TestEntity { Content = "TEST4", CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now });
+            dbContext.TestTable.AddEntity(new TestEntity { Content = "TEST5", CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now });
         }
     }
 }
