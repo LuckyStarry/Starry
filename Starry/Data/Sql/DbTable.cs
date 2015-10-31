@@ -29,6 +29,27 @@ namespace Starry.Data.Sql
             return this.DbContext.GetList<TEntity>(conditions, order);
         }
 
+        public virtual IEnumerable<TEntity> GetPagedList(int pageIndex, int pageSize, out int total, object conditions = null, object order = null)
+        {
+            var assistor = this.DbContext.DbAssistor;
+            var dbCommandSource = assistor.CreateDbCommandForGetList<TEntity>(conditions, order);
+            dbCommandSource.Parameters.Add(assistor.ParameterNameRecordFrom, (pageIndex - 1) * pageSize + 1);
+            dbCommandSource.Parameters.Add(assistor.ParameterNameRecordTo, pageIndex * pageSize);
+            var dbCommand = this.DbContext.DbEntity.CreateDbCommand(dbCommandSource);
+            var dataSet = this.DbContext.ExecuteDataSet(dbCommand);
+            if (dataSet != null && dataSet.Tables.Count == 2)
+            {
+                total = Convert.ToInt32(dataSet.Tables[0].Rows[0][0]);
+                var table = dataSet.Tables[1];
+                if (table != null && table.Rows.Count > 0)
+                {
+                    return table.ToList<TEntity>(assistor.DbMappings.GetDbMapping(typeof(TEntity)));
+                }
+            }
+            total = 0;
+            return null;
+        }
+
         public virtual int AddEntity(TEntity entity)
         {
             var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForAddEntity(entity);
