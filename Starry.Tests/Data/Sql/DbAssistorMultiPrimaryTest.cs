@@ -22,7 +22,7 @@ CREATE TABLE `TestTableMulti` (
   PRIMARY KEY (`ID1`, `ID2`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;";
 
-            var dataConext = new TestDbContext("Datasource=localhost;Database=test;uid=root;pwd=P@ssw0rd;", "MySql.Data.MySqlClient");
+            var dataConext = new TestDbContext("Datasource=DataCenter-PC;Database=test;uid=root;pwd=P@ssw0rd;", "MySql.Data.MySqlClient");
             dataConext.ExecuteNonQuery(dbText);
             return dataConext;
         }

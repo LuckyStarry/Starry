@@ -29,11 +29,29 @@ namespace Starry.Data.Sql
             return this.DbContext.GetList<TEntity>(conditions, order);
         }
 
+        public virtual Collections.IPagedList<TEntity> GetPagedList(int pageIndex, int pageSize, object conditions = null, object order = null)
+        {
+            return this.DbContext.GetPagedList<TEntity>(pageIndex, pageSize, conditions, order);
+        }
+
         public virtual int AddEntity(TEntity entity)
         {
             var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForAddEntity(entity);
             var dbCommand = this.DbContext.DbEntity.CreateDbCommand(dbCommandSource);
             return this.DbContext.ExecuteNonQuery(dbCommand);
+        }
+
+        public virtual TEntity AddAndGetEntity(TEntity entity)
+        {
+            var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForAddAndGetEntity(entity);
+            var dbCommand = this.DbContext.DbEntity.CreateDbCommand(dbCommandSource);
+            var dataTable = this.DbContext.ExecuteDataTable(dbCommand);
+            var list = dataTable.ToList<TEntity>(this.DbMapping);
+            if (list != null)
+            {
+                return list.FirstOrDefault();
+            }
+            return default(TEntity);
         }
 
         public virtual int UpdateEntity(TEntity entity)
