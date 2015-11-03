@@ -36,6 +36,19 @@ namespace Starry.Data.Sql
             return this.DbContext.ExecuteNonQuery(dbCommand);
         }
 
+        public virtual TEntity AddAndGetEntity(TEntity entity)
+        {
+            var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForAddAndGetEntity(entity);
+            var dbCommand = this.DbContext.DbEntity.CreateDbCommand(dbCommandSource);
+            var dataTable = this.DbContext.ExecuteDataTable(dbCommand);
+            var list = dataTable.ToList<TEntity>(this.DbMapping);
+            if (list != null)
+            {
+                return list.FirstOrDefault();
+            }
+            return default(TEntity);
+        }
+
         public virtual int UpdateEntity(TEntity entity)
         {
             var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForUpdateEntity(entity);

@@ -125,7 +125,7 @@ namespace Starry.Data.Sql
             return dbCommandSource;
         }
 
-        public abstract DbCommandSource CreateDbCommandForAddEntityAndGetRecordID<TEntity>(TEntity entity);
+        protected internal abstract DbCommandSource CreateDbCommandForAddAndGetEntity<TEntity>(TEntity entity);
 
         public virtual DbCommandSource CreateDbCommandForUpdateEntity<TEntity>(TEntity entity)
         {
