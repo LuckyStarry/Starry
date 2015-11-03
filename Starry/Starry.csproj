@@ -74,6 +74,7 @@
     <Compile Include="Data\Sql\DbMappingCollectionDefault.cs" />
     <Compile Include="Data\Sql\DbTable.cs" />
     <Compile Include="Data\Sql\DbMappingCollection.cs" />
+    <Compile Include="Data\Sql\Exception\SqlGenerateException.cs" />
     <Compile Include="Data\Sql\Extend\DbCommand.AppendParameter.cs" />
     <Compile Include="Data\Sql\Extend\DbDataAdapter.GetData.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\IDbCondition.cs" />

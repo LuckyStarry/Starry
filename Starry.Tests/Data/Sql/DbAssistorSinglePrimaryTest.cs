@@ -30,8 +30,8 @@ CREATE TABLE `TestTable` (
         public void CRUDTest()
         {
             var dbContext = this.InitDataContext();
-            var add = dbContext.TestTable.AddEntity(new TestEntity { Content = "TEST1", CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now });
-            Assert.AreEqual(add, 1, "ADD ENTITY ERROR");
+            var addEntity = dbContext.TestTable.AddAndGetEntity(new TestEntity { Content = "TEST1", CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now });
+            Assert.AreEqual(addEntity.ID, 1, "ADD ENTITY ERROR");
 
             var list = dbContext.TestTable.GetList();
             Assert.IsTrue(list != null && list.Any(), "GET LIST ERROR");

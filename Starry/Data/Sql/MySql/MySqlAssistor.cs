@@ -32,10 +32,25 @@ SELECT COUNT(1)
             return getList;
         }
 
-        public override DbCommandSource CreateDbCommandForAddEntityAndGetRecordID<TEntity>(TEntity entity)
+        protected internal override DbCommandSource CreateDbCommandForAddAndGetEntity<TEntity>(TEntity entity)
         {
+            var mapping = this.DbMappings.GetDbMapping(typeof(TEntity));
+            var primaryKeys = mapping.Columns.Where(c => c.IsPrimaryKey).ToList();
+            if (primaryKeys.Count != 1)
+            {
+                throw new SqlGenerateException(string.Format("The table must have only one primary key, but there are {0} primary key(s)", primaryKeys.Count));
+            }
+            var primaryKey = primaryKeys.First();
+            var propertyType = primaryKey.PropertyInfo.PropertyType;
+            if (propertyType != typeof(short)
+                && propertyType != typeof(int)
+                && propertyType != typeof(long))
+            {
+                throw new SqlGenerateException(string.Format("The type of primary key must is short int or long"));
+            }
             var dbCommand = this.CreateDbCommandForAddEntity(entity);
-            dbCommand.CommandText = string.Format("{0};SELECT LAST_INSERT_ID()", dbCommand.CommandText);
+            var dbGetCommand = this.CreateDbCommandForGetList<TEntity>(string.Format("{0} = LAST_INSERT_ID()", primaryKey.ColumnName));
+            dbCommand.CommandText = string.Format("{0};{1}", dbCommand.CommandText, dbGetCommand.CommandText);
             return dbCommand;
         }
     }
