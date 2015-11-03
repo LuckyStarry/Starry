@@ -10,22 +10,26 @@ namespace Starry.Data.Sql.MySql
     {
         public override string ParameterSymbol { get { return "?"; } }
 
-        public override DbCommandSource CreateDbCommandForGetPagedList(string selectText, string order)
+        protected internal override DbCommandSource CreateDbCommandForGetPagedList<TEntity>(int pageIndex, int pageSize, object conditions = null, object order = null)
         {
-            var sqlText = new StringBuilder();
-            sqlText.AppendFormat(@"
+            var orderString = this.GetOrders(order);
+            var getList = this.CreateDbCommandForGetList<TEntity>(conditions);
+            getList.CommandText = string.Format(@"
 SELECT COUNT(1)
   FROM ({0}) AS __TCOUNT;
 {0}
-", selectText);
-            if (!string.IsNullOrWhiteSpace(order))
+", getList.CommandText);
+            if (!string.IsNullOrWhiteSpace(orderString))
             {
-                sqlText.AppendFormat(@"
- ORDER BY {0}
-", order);
+                getList.CommandText += string.Format(@" ORDER BY {0}
+", orderString);
             }
-            sqlText.AppendFormat(" LIMIT {0}{1},{0}{2}", this.ParameterSymbol, this.ParameterNameRecordFrom, this.ParameterNameRecordTo);
-            return new DbCommandSource { CommandText = sqlText.ToString() };
+            var pRowStart = "__rowStart";
+            var pPageSize = "__pageSize";
+            getList.CommandText += string.Format(" LIMIT {0}{1},{0}{2}", this.ParameterSymbol, pRowStart, pPageSize);
+            getList.Parameters.Add(pRowStart, (pageIndex - 1) * pageSize);
+            getList.Parameters.Add(pPageSize, pageSize);
+            return getList;
         }
 
         public override DbCommandSource CreateDbCommandForAddEntityAndGetRecordID<TEntity>(TEntity entity)

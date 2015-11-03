@@ -135,5 +135,20 @@ namespace Starry.Data.Sql
             var dataTable = this.ExecuteDataTable(dbCommand);
             return dataTable.ToList<TEntity>(this.DbAssistor.DbMappings.GetDbMapping(typeof(TEntity)));
         }
+
+        public virtual Collections.IPagedList<TEntity> GetPagedList<TEntity>(int pageIndex, int pageSize, object conditions = null, object order = null)
+            where TEntity : new()
+        {
+            var dbCommandSource = this.DbAssistor.CreateDbCommandForGetPagedList<TEntity>(pageIndex, pageSize, conditions, order);
+            var dbCommand = this.DbEntity.CreateDbCommand(dbCommandSource);
+            var dataSet = this.ExecuteDataSet(dbCommand);
+            if (dataSet != null && dataSet.Tables.Count == 2)
+            {
+                var total = Convert.ToInt32(dataSet.Tables[0].Rows[0][0]);
+                var list = dataSet.Tables[1].ToList<TEntity>(this.DbAssistor.DbMappings.GetDbMapping(typeof(TEntity)));
+                return new Collections.PagedList<TEntity>(list, pageIndex, pageSize, total);
+            }
+            return null;
+        }
     }
 }

@@ -29,6 +29,11 @@ namespace Starry.Data.Sql
             return this.DbContext.GetList<TEntity>(conditions, order);
         }
 
+        public virtual Collections.IPagedList<TEntity> GetPagedList(int pageIndex, int pageSize, object conditions = null, object order = null)
+        {
+            return this.DbContext.GetPagedList<TEntity>(pageIndex, pageSize, conditions, order);
+        }
+
         public virtual int AddEntity(TEntity entity)
         {
             var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForAddEntity(entity);
