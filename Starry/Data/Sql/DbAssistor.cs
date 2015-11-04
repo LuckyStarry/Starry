@@ -18,14 +18,10 @@ namespace Starry.Data.Sql
             {
                 throw new ArgumentNullException("dpMappings");
             }
-            this.ParameterNameRecordFrom = "RecordFrom";
-            this.ParameterNameRecordTo = "RecordTo";
             this.DbMappings = dpMappings;
         }
 
         public abstract string ParameterSymbol { get; }
-        public string ParameterNameRecordFrom { set; get; }
-        public string ParameterNameRecordTo { set; get; }
         public DbMappingCollection DbMappings { private set; get; }
 
         public virtual DbCommandSource CreateDbCommandForGetList<TEntity>(object conditions = null, object order = null)
@@ -50,47 +46,16 @@ namespace Starry.Data.Sql
                     dbCommandSource.Parameters.Add(param.Key, param.Value);
                 }
             }
-            if (order != null)
+            var orderString = this.GetOrders(order);
+            if (orderString != null)
             {
-                if (order is string)
-                {
-                    sqlText.AppendLine(" ORDER BY {0}", order);
-                }
-                else
-                {
-                    var listSort = new List<string>();
-                    foreach (var pCondition in order.GetType().GetProperties())
-                    {
-                        if (pCondition.CanRead && pCondition.PropertyType == typeof(string))
-                        {
-                            var dbParamName = pCondition.Name;
-                            var objVal = pCondition.GetValue(order, null);
-                            var sortType = ((string)objVal) ?? string.Empty;
-                            switch (sortType.ToLower())
-                            {
-                                case "asc":
-                                case "desc":
-                                    listSort.Add(string.Format("{0} {1}", dbParamName, sortType));
-                                    break;
-                            }
-                        }
-                    }
-                    if (listSort != null && listSort.Any())
-                    {
-                        sqlText.AppendLine(" ORDER BY {0}", string.Join(" ", listSort));
-                    }
-                }
+                sqlText.AppendLine(" ORDER BY {0}", orderString);
             }
             dbCommandSource.CommandText = sqlText.ToString();
             return dbCommandSource;
         }
 
-        public DbCommandSource CreateDbCommandForGetPagedList(string selectText)
-        {
-            return this.CreateDbCommandForGetPagedList(selectText, null);
-        }
-
-        public abstract DbCommandSource CreateDbCommandForGetPagedList(string selectText, string order);
+        protected internal abstract DbCommandSource CreateDbCommandForGetPagedList<TEntity>(int pageIndex, int pageSize, object conditions = null, object order = null);
 
         public virtual DbCommandSource CreateDbCommandForAddEntity<TEntity>(TEntity entity)
         {
@@ -385,6 +350,42 @@ namespace Starry.Data.Sql
             {
                 return condition.Generate();
             }
+        }
+
+        protected string GetOrders(object order)
+        {
+            if (order != null)
+            {
+                if (order is string)
+                {
+                    return (string)order;
+                }
+                else
+                {
+                    var listSort = new List<string>();
+                    foreach (var pCondition in order.GetType().GetProperties())
+                    {
+                        if (pCondition.CanRead && pCondition.PropertyType == typeof(string))
+                        {
+                            var dbParamName = pCondition.Name;
+                            var objVal = pCondition.GetValue(order, null);
+                            var sortType = ((string)objVal) ?? string.Empty;
+                            switch (sortType.ToLower())
+                            {
+                                case "asc":
+                                case "desc":
+                                    listSort.Add(string.Format("{0} {1}", dbParamName, sortType));
+                                    break;
+                            }
+                        }
+                    }
+                    if (listSort != null && listSort.Any())
+                    {
+                        return string.Join(" ", listSort);
+                    }
+                }
+            }
+            return null;
         }
     }
 }
