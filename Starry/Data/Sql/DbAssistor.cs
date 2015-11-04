@@ -55,7 +55,9 @@ namespace Starry.Data.Sql
             return dbCommandSource;
         }
 
-        protected internal abstract DbCommandSource CreateDbCommandForGetPagedList<TEntity>(int pageIndex, int pageSize, object conditions = null, object order = null);
+        public abstract DbCommandSource CreateDbCommandForGetPagedList<TEntity>(string selectText, int pageIndex, int pageSize, object conditions = null, object order = null);
+
+        public abstract DbCommandSource CreateDbCommandForGetPagedList<TEntity>(int pageIndex, int pageSize, object conditions = null, object order = null);
 
         public virtual DbCommandSource CreateDbCommandForAddEntity<TEntity>(TEntity entity)
         {
@@ -90,7 +92,7 @@ namespace Starry.Data.Sql
             return dbCommandSource;
         }
 
-        protected internal abstract DbCommandSource CreateDbCommandForAddAndGetEntity<TEntity>(TEntity entity);
+        public abstract DbCommandSource CreateDbCommandForAddAndGetEntity<TEntity>(TEntity entity);
 
         public virtual DbCommandSource CreateDbCommandForUpdateEntity<TEntity>(TEntity entity)
         {
@@ -283,7 +285,7 @@ namespace Starry.Data.Sql
             return dbCommandSource;
         }
 
-        protected DbCommandSource GetDbConditions(object conditions)
+        public virtual DbCommandSource GetDbConditions(object conditions)
         {
             if (conditions == null)
             {
