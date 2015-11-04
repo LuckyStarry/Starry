@@ -127,19 +127,20 @@ namespace Starry.Data.Sql
             return this.ExecuteDataTable(command);
         }
 
-        public virtual IEnumerable<TEntity> GetList<TEntity>(object conditions = null, object order = null)
+        public virtual IEnumerable<TEntity> GetList<TEntity>(string selectText, object conditions = null)
             where TEntity : new()
         {
-            var dbCommandSource = this.DbAssistor.CreateDbCommandForGetList<TEntity>(conditions, order);
-            var dbCommand = this.DbEntity.CreateDbCommand(dbCommandSource);
+            var getList = this.DbAssistor.GetDbConditions(conditions) ?? new DbCommandSource();
+            getList.CommandText = selectText;
+            var dbCommand = this.DbEntity.CreateDbCommand(getList);
             var dataTable = this.ExecuteDataTable(dbCommand);
             return dataTable.ToList<TEntity>(this.DbAssistor.DbMappings.GetDbMapping(typeof(TEntity)));
         }
 
-        public virtual Collections.IPagedList<TEntity> GetPagedList<TEntity>(int pageIndex, int pageSize, object conditions = null, object order = null)
+        public virtual Collections.IPagedList<TEntity> GetPagedList<TEntity>(string selectText, int pageIndex, int pageSize, object conditions = null, object order = null)
             where TEntity : new()
         {
-            var dbCommandSource = this.DbAssistor.CreateDbCommandForGetPagedList<TEntity>(pageIndex, pageSize, conditions, order);
+            var dbCommandSource = this.DbAssistor.CreateDbCommandForGetPagedList<TEntity>(selectText, pageIndex, pageSize, conditions, order);
             var dbCommand = this.DbEntity.CreateDbCommand(dbCommandSource);
             var dataSet = this.ExecuteDataSet(dbCommand);
             if (dataSet != null && dataSet.Tables.Count == 2)

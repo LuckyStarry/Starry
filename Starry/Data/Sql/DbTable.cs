@@ -26,17 +26,29 @@ namespace Starry.Data.Sql
 
         public virtual IEnumerable<TEntity> GetList(object conditions = null, object order = null)
         {
-            return this.DbContext.GetList<TEntity>(conditions, order);
+            var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForGetList<TEntity>(conditions, order);
+            var dbCommand = this.DbContext.DbEntity.CreateDbCommand(dbCommandSource);
+            var dataTable = this.DbContext.ExecuteDataTable(dbCommand);
+            return dataTable.ToList<TEntity>(this.DbMapping);
         }
 
         public virtual Collections.IPagedList<TEntity> GetPagedList(int pageIndex, int pageSize, object conditions = null, object order = null)
         {
-            return this.DbContext.GetPagedList<TEntity>(pageIndex, pageSize, conditions, order);
+            var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForGetPagedList<TEntity>(pageIndex, pageSize, conditions, order);
+            var dbCommand = this.DbContext.DbEntity.CreateDbCommand(dbCommandSource);
+            var dataSet = this.DbContext.ExecuteDataSet(dbCommand);
+            if (dataSet != null && dataSet.Tables.Count == 2)
+            {
+                var total = Convert.ToInt32(dataSet.Tables[0].Rows[0][0]);
+                var list = dataSet.Tables[1].ToList<TEntity>(this.DbMapping);
+                return new Collections.PagedList<TEntity>(list, pageIndex, pageSize, total);
+            }
+            return null;
         }
 
         public virtual TEntity GetEntity(object conditions = null)
         {
-            var list = this.DbContext.GetList<TEntity>(conditions);
+            var list = this.GetList(conditions);
             if (list != null)
             {
                 return list.FirstOrDefault();
