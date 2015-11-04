@@ -50,6 +50,16 @@ namespace Starry.Data.Sql
             return null;
         }
 
+        public virtual TEntity GetEntity(object conditions = null)
+        {
+            var list = this.DbContext.GetList<TEntity>(conditions);
+            if (list != null)
+            {
+                return list.FirstOrDefault();
+            }
+            return default(TEntity);
+        }
+
         public virtual int AddEntity(TEntity entity)
         {
             var dbCommandSource = this.DbContext.DbAssistor.CreateDbCommandForAddEntity(entity);
