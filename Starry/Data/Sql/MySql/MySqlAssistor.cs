@@ -10,15 +10,15 @@ namespace Starry.Data.Sql.MySql
     {
         public override string ParameterSymbol { get { return "?"; } }
 
-        protected internal override DbCommandSource CreateDbCommandForGetPagedList<TEntity>(int pageIndex, int pageSize, object conditions = null, object order = null)
+        public override DbCommandSource CreateDbCommandForGetPagedList<TEntity>(string selectText, int pageIndex, int pageSize, object conditions = null, object order = null)
         {
             var orderString = this.GetOrders(order);
-            var getList = this.CreateDbCommandForGetList<TEntity>(conditions);
+            var dbConditions = this.GetDbConditions(conditions);
+            var getList = dbConditions ?? new DbCommandSource();
             getList.CommandText = string.Format(@"
 SELECT COUNT(1)
   FROM ({0}) AS __TCOUNT;
-{0}
-", getList.CommandText);
+{0}", selectText);
             if (!string.IsNullOrWhiteSpace(orderString))
             {
                 getList.CommandText += string.Format(@" ORDER BY {0}
@@ -32,7 +32,13 @@ SELECT COUNT(1)
             return getList;
         }
 
-        protected internal override DbCommandSource CreateDbCommandForAddAndGetEntity<TEntity>(TEntity entity)
+        public override DbCommandSource CreateDbCommandForGetPagedList<TEntity>(int pageIndex, int pageSize, object conditions = null, object order = null)
+        {
+            var getList = this.CreateDbCommandForGetList<TEntity>(conditions);
+            return this.CreateDbCommandForGetPagedList<TEntity>(getList.CommandText, pageIndex, pageSize, conditions, order);
+        }
+
+        public override DbCommandSource CreateDbCommandForAddAndGetEntity<TEntity>(TEntity entity)
         {
             var mapping = this.DbMappings.GetDbMapping(typeof(TEntity));
             var primaryKeys = mapping.Columns.Where(c => c.IsPrimaryKey).ToList();
