@@ -41,6 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\PagedList.cs" />
+    <Compile Include="Data\Sql\Builder\InsertCommandBuilder.cs" />
+    <Compile Include="Data\Sql\Builder\DeleteCommandBuilder.cs" />
+    <Compile Include="Data\Sql\Builder\UpdateCommandBuilder.cs" />
+    <Compile Include="Data\Sql\Builder\SelectCommandBuilder.cs" />
+    <Compile Include="Data\Sql\Builder\CommandBuilder.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\DbConditionContent.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperation.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\DbConditionOperationOr.cs" />
@@ -52,9 +57,9 @@
     <Compile Include="Data\Sql\Builder\DbSqlTreeNode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Sql\Builder\IDbCondition.Not.cs" />
-    <Compile Include="Data\Sql\Builder\IDbCondition.Or.cs" />
-    <Compile Include="Data\Sql\Builder\IDbCondition.And.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\IDbCondition.Not.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\IDbCondition.Or.cs" />
+    <Compile Include="Data\Sql\Builder\Conditions\IDbCondition.And.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\IDbConditionOperation.cs" />
     <Compile Include="Data\Sql\Builder\Conditions\IDbConditionContent.cs" />
     <Compile Include="Data\Sql\Attributes\DbTableAttribute.cs" />
@@ -203,7 +208,9 @@
   <ItemGroup>
     <Compile Include="Extend\DataTable.ToList.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Data\Sql\Builder\Parts\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
