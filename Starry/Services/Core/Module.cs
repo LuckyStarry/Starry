@@ -9,6 +9,11 @@ namespace Starry.Services.Core
         where TService : IService
         where THandler : IHandler
     {
+
+#if DEBUG_CORE_DEBUGGER
+        protected internal override string EngineID { get { return "MODULE " + (this as IModule).ModuleName; } }
+#endif
+
         private List<THandler> handlers;
 
         public Module(TService service)
@@ -34,10 +39,24 @@ namespace Starry.Services.Core
 
         public int MaxConcurrent { set; get; }
 
+        public int Concurrent { get { return this.handlers.Count; } }
+
         public string ModuleName { set; get; }
 
-        protected sealed override void OnHandle(System.Threading.CancellationToken cancellationToken)
+        protected override bool HandleContinue()
         {
+            return base.HandleContinue()
+                && this.Service != null
+                && this.Service.State == EngineState.Running
+                && this.Service.IsAlive;
+        }
+
+        protected sealed override void OnHandle()
+        {
+#if DEBUG_CORE_DEBUGGER
+            //CoreDebugger.WriteLine("Module [{0}] OnHandle Start", this.ModuleName);
+#endif
+            this.handlers.RemoveAll(handle => handle == null);
             for (int i = 0; i < this.handlers.Count; i++)
             {
                 var handler = this.handlers[i];
@@ -89,7 +108,6 @@ namespace Starry.Services.Core
                         break;
                 }
             }
-            this.handlers.RemoveAll(i => i == null);
             while (this.handlers.Count < this.MaxConcurrent)
             {
                 var moduleHandler = this.CreateModuleHandler();
@@ -114,27 +132,52 @@ namespace Starry.Services.Core
                     }
                 }
             }
+#if DEBUG_CORE_DEBUGGER
+            //CoreDebugger.WriteLine("Module [{0}] OnHandle End", this.ModuleName);
+#endif
         }
 
         protected override void OnFinished()
         {
-            this.handlers.RemoveAll(i => i == null);
+#if DEBUG_CORE_DEBUGGER
+            CoreDebugger.WriteLine("Module [{0}] OnFinished Start", this.ModuleName);
+#endif
+            this.handlers.RemoveAll(handle => handle == null);
             while (this.handlers.Count > 0)
             {
                 var lastHandler = this.handlers[this.handlers.Count - 1];
                 if (this.handlers.Remove(lastHandler))
                 {
+#if DEBUG_CORE_DEBUGGER
+                    var engineid = string.Empty;
+                    if (lastHandler is Engine)
+                    {
+                        engineid = (lastHandler as Engine).EngineID;
+                    }
+#endif
                     try
                     {
+#if DEBUG_CORE_DEBUGGER
+                        CoreDebugger.WriteLine("[{0}] {1} Dispose Start", this.EngineID, engineid);
+#endif
                         lastHandler.Dispose();
+#if DEBUG_CORE_DEBUGGER
+                        CoreDebugger.WriteLine("[{0}] {1} Dispose End", this.EngineID, engineid);
+#endif
                     }
                     catch (Exception ex)
                     {
+#if DEBUG_CORE_DEBUGGER
+                        CoreDebugger.WriteLine("[{0}] {1} Dispose Exception {2}", this.EngineID, engineid, ex.Message);
+#endif
                         this.OnException(ex);
                     }
                 }
             }
             base.OnFinished();
+#if DEBUG_CORE_DEBUGGER
+            CoreDebugger.WriteLine("Module [{0}] OnFinished End", this.ModuleName);
+#endif
         }
 
         protected abstract THandler CreateModuleHandler();

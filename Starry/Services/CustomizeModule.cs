@@ -16,6 +16,6 @@ namespace Starry.Services
             return new CustomizeHandler(this, this.ModuleBusiness);
         }
 
-        protected abstract void ModuleBusiness(CancellationToken cancellationToken);
+        protected abstract void ModuleBusiness();
     }
 }
