@@ -20,6 +20,7 @@ namespace Starry.Services.Core
             this.Service = service;
             this.MaxConcurrent = 1;
             this.handlers = new List<THandler>();
+            this.ModuleName = this.GetType().Name;
         }
 
         public Module(TService service, string moduleName)

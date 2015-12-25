@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Starry.Services.Core
 {
-    public abstract class Engine
+    public abstract class Engine : IDisposable
     {
         private Guid uniqueID = Guid.NewGuid();
         public Guid UniqueID { get { return uniqueID; } }
@@ -22,6 +22,11 @@ namespace Starry.Services.Core
 
         public event EventHandler<EventArgs.EngineStateChangedEventArgs> EngineStateChangedEventArgs;
         public event EventHandler<EventArgs.ExceptionHappendEventArgs> ExceptionHappend;
+
+        protected void DoEngineStateChangedEventArgs(object sender, EventArgs.EngineStateChangedEventArgs e)
+        {
+            this.EngineStateChangedEventArgs(sender, e);
+        }
 
         private EngineState state;
         public EngineState State
@@ -76,9 +81,9 @@ namespace Starry.Services.Core
                         try
                         {
                             this.DisposeTaskAndCancelToken();
+                            this.cancellationTokenSource = new CancellationTokenSource();
                             this.task = new Task(this.Handle, (object)this.cancellationTokenSource.Token);
                             this.OnStart();
-                            this.State = EngineState.Running;
                             this.lastRunning = DateTime.Now;
                             this.task.Start();
                         }
@@ -161,6 +166,7 @@ namespace Starry.Services.Core
 
         private void Handle(object objCancellationToken)
         {
+            this.State = EngineState.Running;
             var cancellationToken = (CancellationToken)objCancellationToken;
             while (this.HandleContinue())
             {
