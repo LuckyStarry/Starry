@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Starry.Services.Core
 {
-    public abstract class Service : Engine
+    public class Service : Engine, IService
     {
         private IDictionary<string, IModule> Modules;
         private object syncLock = new object();
@@ -13,11 +13,6 @@ namespace Starry.Services.Core
         public Service()
         {
             this.Modules = new Dictionary<string, IModule>();
-        }
-
-        public void Append(string moduleName)
-        {
-            this.Append(this.CreateModule(moduleName));
         }
 
         public void Append(IModule module)
@@ -67,8 +62,6 @@ namespace Starry.Services.Core
         {
             return this.Modules.Values.ToArray();
         }
-
-        public abstract IModule CreateModule(string moduleName);
 
         protected override void OnHandle(System.Threading.CancellationToken cancellationToken)
         {
