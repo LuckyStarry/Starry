@@ -35,12 +35,17 @@ namespace Starry.Services.Core
 #endif
         }
 
-        public event EventHandler<EventArgs.EngineStateChangedEventArgs> EngineStateChangedEventArgs;
+        public event EventHandler<EventArgs.EngineStateChangedEventArgs> EngineStateChanged;
         public event EventHandler<EventArgs.ExceptionHappendEventArgs> ExceptionHappend;
 
-        protected void DoEngineStateChangedEventArgs(object sender, EventArgs.EngineStateChangedEventArgs e)
+        public void DoEngineStateChanged(object sender, EventArgs.EngineStateChangedEventArgs e)
         {
-            this.EngineStateChangedEventArgs(sender, e);
+            this.EngineStateChanged(sender, e);
+        }
+
+        public void DoExceptionHappend(object sender, EventArgs.ExceptionHappendEventArgs e)
+        {
+            this.ExceptionHappend(sender, e);
         }
 
         private EngineState state;
@@ -52,9 +57,9 @@ namespace Starry.Services.Core
                 {
                     var ogri = this.state;
                     this.state = value;
-                    if (this.EngineStateChangedEventArgs != null)
+                    if (this.EngineStateChanged != null)
                     {
-                        this.EngineStateChangedEventArgs(this, new EventArgs.EngineStateChangedEventArgs(ogri, value));
+                        this.EngineStateChanged(this, new EventArgs.EngineStateChangedEventArgs(ogri, value));
                     }
                 }
             }
