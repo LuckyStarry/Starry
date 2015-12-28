@@ -4,4 +4,4 @@ install:
   - nuget restore Starry.sln
 
 script:
-  - xbuild Starry.sln
+  - xbuild /p:Configuration=Release Starry.sln
