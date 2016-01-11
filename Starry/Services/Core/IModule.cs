@@ -9,6 +9,7 @@ namespace Starry.Services.Core
     {
         IService Service { get; }
         int MaxConcurrent { set; get; }
+        int Concurrent { get; }
         string ModuleName { set; get; }
     }
 

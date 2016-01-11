@@ -8,7 +8,7 @@ namespace Starry.Services
 {
     internal class CustomizeModuleLightly : CustomizeModule
     {
-        internal CustomizeModuleLightly(Action<CancellationToken> action, Core.IService service)
+        internal CustomizeModuleLightly(Action action, Core.IService service)
             : base(service)
         {
             if (action == null)
@@ -18,11 +18,11 @@ namespace Starry.Services
             this.action = action;
         }
 
-        private Action<CancellationToken> action;
+        private Action action;
 
-        protected override void ModuleBusiness(CancellationToken cancellationToken)
+        protected override void ModuleBusiness()
         {
-            this.action.Invoke(cancellationToken);
+            this.action.Invoke();
         }
     }
 }

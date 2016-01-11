@@ -5,19 +5,19 @@ using System.Text;
 
 namespace Starry.Services.Core
 {
-    public abstract class Service : Engine
+    public class Service : Engine, IService
     {
+
+#if DEBUG_CORE_DEBUGGER
+        protected internal override string EngineID { get { return "SERVICE"; } }
+#endif
+
         private IDictionary<string, IModule> Modules;
         private object syncLock = new object();
 
         public Service()
         {
             this.Modules = new Dictionary<string, IModule>();
-        }
-
-        public void Append(string moduleName)
-        {
-            this.Append(this.CreateModule(moduleName));
         }
 
         public void Append(IModule module)
@@ -68,9 +68,7 @@ namespace Starry.Services.Core
             return this.Modules.Values.ToArray();
         }
 
-        public abstract IModule CreateModule(string moduleName);
-
-        protected override void OnHandle(System.Threading.CancellationToken cancellationToken)
+        protected override void OnHandle()
         {
             var removeModules = new List<string>();
             foreach (var module in this.Modules)
@@ -112,6 +110,20 @@ namespace Starry.Services.Core
                             break;
                         case EngineState.Stopping:
                         case EngineState.Stopped:
+                            switch (module.Value.State)
+                            {
+                                case EngineState.Running:
+                                    try
+                                    {
+                                        module.Value.Stop();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        this.OnException(ex);
+                                    }
+                                    break;
+                            }
+                            break;
                         case EngineState.Disposing:
                         case EngineState.Disposed:
                             switch (module.Value.State)

@@ -7,6 +7,7 @@ namespace Starry.Services.Core
 {
     public interface IEngine : IDisposable
     {
+        Guid UniqueID { get; }
         EngineState State { get; }
 
         void Start();

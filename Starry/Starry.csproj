@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DEBUG_CORE_DEBUGGER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -81,6 +81,7 @@
     <Compile Include="Data\Sql\MySql\MySqlAssistor.cs" />
     <Compile Include="Collections\IPagedList.cs" />
     <Compile Include="Services\Action.ToCustomizeModule.cs" />
+    <Compile Include="Services\Core\CoreDebugger.cs" />
     <Compile Include="Services\CustomizeHandler.cs" />
     <Compile Include="Extend\IEnumerable.ToDataTable.cs" />
     <Compile Include="Extend\String.Convert.cs" />
