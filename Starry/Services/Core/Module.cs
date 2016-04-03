@@ -9,11 +9,6 @@ namespace Starry.Services.Core
         where TService : IService
         where THandler : IHandler
     {
-
-#if DEBUG_CORE_DEBUGGER
-        protected internal override string EngineID { get { return "MODULE " + (this as IModule).ModuleName; } }
-#endif
-
         private List<THandler> handlers;
 
         public Module(TService service)
@@ -43,19 +38,16 @@ namespace Starry.Services.Core
 
         public string ModuleName { set; get; }
 
-        protected override bool HandleContinue()
+        protected override bool WorkContinue()
         {
-            return base.HandleContinue()
+            return base.WorkContinue()
                 && this.Service != null
                 && this.Service.State == EngineState.Running
                 && this.Service.IsAlive;
         }
 
-        protected sealed override void OnHandle()
+        protected sealed override void WorkHandle()
         {
-#if DEBUG_CORE_DEBUGGER
-            //CoreDebugger.WriteLine("Module [{0}] OnHandle Start", this.ModuleName);
-#endif
             this.handlers.RemoveAll(handle => handle == null);
             for (int i = 0; i < this.handlers.Count; i++)
             {
@@ -82,7 +74,7 @@ namespace Starry.Services.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.OnException(ex);
+                                        this.ExceptionHandle(ex);
                                     }
                                 }
                                 break;
@@ -101,7 +93,7 @@ namespace Starry.Services.Core
                                 }
                                 catch (Exception ex)
                                 {
-                                    this.OnException(ex);
+                                    this.ExceptionHandle(ex);
                                 }
                                 break;
                         }
@@ -128,56 +120,31 @@ namespace Starry.Services.Core
                     }
                     catch (Exception ex)
                     {
-                        this.OnException(ex);
+                        this.ExceptionHandle(ex);
                     }
                 }
             }
-#if DEBUG_CORE_DEBUGGER
-            //CoreDebugger.WriteLine("Module [{0}] OnHandle End", this.ModuleName);
-#endif
         }
 
-        protected override void OnFinished()
+        protected override void FinishedHandle()
         {
-#if DEBUG_CORE_DEBUGGER
-            CoreDebugger.WriteLine("Module [{0}] OnFinished Start", this.ModuleName);
-#endif
             this.handlers.RemoveAll(handle => handle == null);
             while (this.handlers.Count > 0)
             {
                 var lastHandler = this.handlers[this.handlers.Count - 1];
                 if (this.handlers.Remove(lastHandler))
                 {
-#if DEBUG_CORE_DEBUGGER
-                    var engineid = string.Empty;
-                    if (lastHandler is Engine)
-                    {
-                        engineid = (lastHandler as Engine).EngineID;
-                    }
-#endif
                     try
                     {
-#if DEBUG_CORE_DEBUGGER
-                        CoreDebugger.WriteLine("[{0}] {1} Dispose Start", this.EngineID, engineid);
-#endif
                         lastHandler.Dispose();
-#if DEBUG_CORE_DEBUGGER
-                        CoreDebugger.WriteLine("[{0}] {1} Dispose End", this.EngineID, engineid);
-#endif
                     }
                     catch (Exception ex)
                     {
-#if DEBUG_CORE_DEBUGGER
-                        CoreDebugger.WriteLine("[{0}] {1} Dispose Exception {2}", this.EngineID, engineid, ex.Message);
-#endif
-                        this.OnException(ex);
+                        this.ExceptionHandle(ex);
                     }
                 }
             }
-            base.OnFinished();
-#if DEBUG_CORE_DEBUGGER
-            CoreDebugger.WriteLine("Module [{0}] OnFinished End", this.ModuleName);
-#endif
+            base.FinishedHandle();
         }
 
         protected abstract THandler CreateModuleHandler();

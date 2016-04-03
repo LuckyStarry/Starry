@@ -7,11 +7,6 @@ namespace Starry.Services.Core
 {
     public class Service : Engine, IService
     {
-
-#if DEBUG_CORE_DEBUGGER
-        protected internal override string EngineID { get { return "SERVICE"; } }
-#endif
-
         private IDictionary<string, IModule> Modules;
         private object syncLock = new object();
 
@@ -68,7 +63,7 @@ namespace Starry.Services.Core
             return this.Modules.Values.ToArray();
         }
 
-        protected override void OnHandle()
+        protected override void WorkHandle()
         {
             var removeModules = new List<string>();
             foreach (var module in this.Modules)
@@ -102,7 +97,7 @@ namespace Starry.Services.Core
                                         }
                                         catch (Exception ex)
                                         {
-                                            this.OnException(ex);
+                                            this.ExceptionHandle(ex);
                                         }
                                     }
                                     break;
@@ -119,7 +114,7 @@ namespace Starry.Services.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.OnException(ex);
+                                        this.ExceptionHandle(ex);
                                     }
                                     break;
                             }
@@ -135,7 +130,7 @@ namespace Starry.Services.Core
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.OnException(ex);
+                                        this.ExceptionHandle(ex);
                                     }
                                     break;
                             }
@@ -149,7 +144,7 @@ namespace Starry.Services.Core
             }
         }
 
-        protected override void OnFinished()
+        protected override void FinishedHandle()
         {
             foreach (var module in this.Modules)
             {
@@ -163,20 +158,20 @@ namespace Starry.Services.Core
                         }
                         catch (Exception ex)
                         {
-                            this.OnException(ex);
+                            this.ExceptionHandle(ex);
                             try
                             {
                                 module.Value.Dispose();
                             }
                             catch (Exception exDisp)
                             {
-                                this.OnException(exDisp);
+                                this.ExceptionHandle(exDisp);
                             }
                         }
                     }
                 }
             }
-            base.OnFinished();
+            base.FinishedHandle();
         }
     }
 }

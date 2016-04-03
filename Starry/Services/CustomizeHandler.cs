@@ -26,7 +26,7 @@ namespace Starry.Services
         public bool Asycn { set; get; }
         public Action Callback { set; get; }
 
-        protected sealed override void OnHandle()
+        protected sealed override void WorkHandle()
         {
             if (this.Asycn)
             {
