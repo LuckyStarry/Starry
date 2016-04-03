@@ -23,7 +23,7 @@ namespace Starry
             Int16 o;
             if (Int16.TryParse(numeric, out o))
             {
-                return 0;
+                return o;
             }
             return defaultValue;
         }
@@ -44,7 +44,7 @@ namespace Starry
             Int32 o;
             if (Int32.TryParse(numeric, out o))
             {
-                return 0;
+                return o;
             }
             return defaultValue;
         }
@@ -65,7 +65,7 @@ namespace Starry
             Int64 o;
             if (Int64.TryParse(numeric, out o))
             {
-                return 0;
+                return o;
             }
             return defaultValue;
         }
