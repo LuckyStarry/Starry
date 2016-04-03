@@ -40,6 +40,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -54,11 +55,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Data\Sql\DbAssistorMultiPrimaryTest.cs" />
-    <Compile Include="Data\Sql\DbAssistorSinglePrimaryTest.cs" />
     <Compile Include="Data\Sql\TestDbContext.cs" />
     <Compile Include="Data\Sql\TestTableMulti.cs" />
     <Compile Include="Data\Sql\TestEntity.cs" />
+    <Compile Include="Extend\EnumerableEntityDef.cs" />
+    <Compile Include="Extend\StringConvertInt64Test.cs" />
+    <Compile Include="Extend\StringConvertInt32Test.cs" />
+    <Compile Include="Extend\StringConvertInt16Test.cs" />
+    <Compile Include="Extend\StringExtendTest.cs" />
+    <Compile Include="Extend\StringBuilderTest.cs" />
+    <Compile Include="Extend\IEnumerableExtendTest.cs" />
+    <Compile Include="Extend\DataTableExtendTest.cs" />
     <Compile Include="Web.Controls\BuildTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web.Controls\HtmlRenderHelper.cs" />

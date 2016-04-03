@@ -9,10 +9,10 @@ namespace Starry.Services.Core
 {
     public abstract class Engine : IDisposable
     {
-        private Guid uniqueID = Guid.NewGuid();
+        private readonly Guid uniqueID = Guid.NewGuid();
         public Guid UniqueID { get { return this.uniqueID; } }
 
-        private object syncLock = new object();
+        private readonly object syncLock = new object();
         private DateTime lastRunning;
 
         protected Engine()
