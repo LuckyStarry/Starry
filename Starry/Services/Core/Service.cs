@@ -8,7 +8,7 @@ namespace Starry.Services.Core
     public class Service : Engine, IService
     {
         private IDictionary<string, IModule> Modules;
-        private object syncLock = new object();
+        private readonly object syncLock = new object();
 
         public Service()
         {
