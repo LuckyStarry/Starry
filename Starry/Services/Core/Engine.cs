@@ -10,11 +10,7 @@ namespace Starry.Services.Core
     public abstract class Engine : IDisposable
     {
         private readonly Guid uniqueID = Guid.NewGuid();
-        public Guid UniqueID { get { return uniqueID; } }
-
-#if DEBUG_CORE_DEBUGGER
-        protected internal abstract string EngineID { get; }
-#endif
+        public Guid UniqueID { get { return this.uniqueID; } }
 
         private readonly object syncLock = new object();
         private DateTime lastRunning;
@@ -22,45 +18,37 @@ namespace Starry.Services.Core
         protected Engine()
         {
             this.state = EngineState.Standby;
-
-#if DEBUG_CORE_DEBUGGER
-            this.EngineStateChangedEventArgs += (sender, e) =>
-            {
-                CoreDebugger.WriteLine("[{0}] STATE {1} => {2}", this.EngineID, e.Before, e.After);
-            };
-            this.ExceptionHappend += (sender, e) =>
-            {
-                CoreDebugger.WriteLine("[{0}] EXCEPTION {1}", this.EngineID, e.Exception.Message);
-            };
-#endif
         }
 
         public event EventHandler<EventArgs.EngineStateChangedEventArgs> EngineStateChanged;
         public event EventHandler<EventArgs.ExceptionHappendEventArgs> ExceptionHappend;
 
-        public void DoEngineStateChanged(object sender, EventArgs.EngineStateChangedEventArgs e)
+        protected virtual void OnEngineStateChanged(EventArgs.EngineStateChangedEventArgs e)
         {
-            this.EngineStateChanged(sender, e);
+            if (this.EngineStateChanged != null)
+            {
+                this.EngineStateChanged(this, e);
+            }
         }
 
-        public void DoExceptionHappend(object sender, EventArgs.ExceptionHappendEventArgs e)
+        protected virtual void OnExceptionHappend(EventArgs.ExceptionHappendEventArgs e)
         {
-            this.ExceptionHappend(sender, e);
+            if (ExceptionHappend != null)
+            {
+                this.ExceptionHappend(this, e);
+            }
         }
 
-        private EngineState state;
+        private EngineState state = EngineState.Unknown;
         public EngineState State
         {
             private set
             {
                 if (value != this.state)
                 {
-                    var ogri = this.state;
+                    var original = this.state;
                     this.state = value;
-                    if (this.EngineStateChanged != null)
-                    {
-                        this.EngineStateChanged(this, new EventArgs.EngineStateChangedEventArgs(ogri, value));
-                    }
+                    this.OnEngineStateChanged(new EventArgs.EngineStateChangedEventArgs(original, value));
                 }
             }
             get { return this.state; }
@@ -76,13 +64,18 @@ namespace Starry.Services.Core
                     case EngineState.Standup:
                     case EngineState.Running:
                     case EngineState.Stopping:
-                    case EngineState.Disposing: return (DateTime.Now - this.lastRunning).TotalSeconds < this.AliveTimeout;
+                    case EngineState.Disposing: return (DateTime.Now - this.lastRunning).TotalSeconds < this.WorkTimeout;
                     default: return true;
                 }
             }
         }
 
-        protected virtual int AliveTimeout { get { return 30; } }
+        private int workTimeout = 30;
+        public int WorkTimeout
+        {
+            set { this.workTimeout = value; }
+            get { return this.workTimeout; }
+        }
 
         public void Start()
         {
@@ -97,21 +90,15 @@ namespace Starry.Services.Core
                         this.State = EngineState.Standup;
                         try
                         {
-                            this.DisposeTaskAndCancelToken();
-                            this.handleThread = new Thread(new ThreadStart(this.Handle));
-                            this.OnStart();
+                            this.DisposeWorkThread();
+                            this.handleThread = new Thread(new ThreadStart(this.Work));
+                            this.StartHandle();
                             this.lastRunning = DateTime.Now;
-#if DEBUG_CORE_DEBUGGER
-                            CoreDebugger.WriteLine("[{0}] TaskStart Start", this.EngineID);
-#endif
                             this.handleThread.Start();
-#if DEBUG_CORE_DEBUGGER
-                            CoreDebugger.WriteLine("[{0}] TaskStart End", this.EngineID);
-#endif
                         }
                         catch (Exception ex)
                         {
-                            this.OnException(ex);
+                            this.ExceptionHandle(ex);
                         }
                     }
                     else
@@ -122,7 +109,7 @@ namespace Starry.Services.Core
             }
         }
 
-        protected virtual void OnStart() { }
+        protected virtual void StartHandle() { }
 
         private Thread handleThread;
 
@@ -135,49 +122,37 @@ namespace Starry.Services.Core
                     if (this.State == EngineState.Running)
                     {
                         this.State = EngineState.Stopping;
-                        this.DisposeTaskAndCancelToken();
-                        this.OnStop();
+                        this.DisposeWorkThread();
+                        this.StopHandle();
                         this.State = EngineState.Stopped;
                     }
                 }
             }
         }
 
-        private void DisposeTaskAndCancelToken()
+        private void DisposeWorkThread()
         {
             if (this.handleThread != null)
             {
-#if DEBUG_CORE_DEBUGGER
-                CoreDebugger.WriteLine("[{0}] TaskWaiting Start", this.EngineID);
-#endif
-                if (!this.handleThread.Join(TimeSpan.FromSeconds(this.AliveTimeout)))
+                if (!this.handleThread.Join(TimeSpan.FromSeconds(this.WorkTimeout)))
                 {
-#if DEBUG_CORE_DEBUGGER
-                    CoreDebugger.WriteLine("[{0}] Task cancel Start", this.EngineID);
-#endif
                     try
                     {
                         this.handleThread.Abort();
-#if DEBUG_CORE_DEBUGGER
-                        CoreDebugger.WriteLine("[{0}] Task cancel waiting Start", this.EngineID);
-#endif
                     }
-                    catch (Exception ex)
+                    catch (Exception exception)
                     {
-                        this.OnException(ex);
+                        this.ExceptionHandle(exception);
                     }
                 }
             }
             this.handleThread = null;
         }
 
-        protected virtual void OnStop() { }
+        protected virtual void StopHandle() { }
 
-        private void Handle()
+        private void Work()
         {
-#if DEBUG_CORE_DEBUGGER
-            CoreDebugger.WriteLine("[{0}] TaskStart Success", this.EngineID);
-#endif
             this.lastRunning = DateTime.Now;
             lock (this.syncLock)
             {
@@ -186,51 +161,45 @@ namespace Starry.Services.Core
                     this.State = EngineState.Running;
                 }
             }
-            while (this.HandleContinue())
+            while (this.WorkContinue())
             {
                 this.lastRunning = DateTime.Now;
                 try
                 {
-                    this.OnHandle();
+                    this.WorkHandle();
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
-                    this.OnException(ex);
+                    this.ExceptionHandle(exception);
                 }
-                this.OnSleep();
+                this.SleepHandle();
             }
-            this.OnFinished();
+            this.FinishedHandle();
         }
 
-        protected virtual bool HandleContinue()
+        protected virtual bool WorkContinue()
         {
             return this.State == EngineState.Running;
         }
 
-        protected abstract void OnHandle();
+        protected abstract void WorkHandle();
 
-        protected virtual void OnSleep()
+        protected virtual void SleepHandle()
         {
             System.Threading.Thread.Sleep(10);
         }
 
-        protected virtual void OnFinished() { }
+        protected virtual void FinishedHandle() { }
 
-        protected virtual void OnException(Exception ex)
+        protected virtual void ExceptionHandle(Exception ex)
         {
-            if (this.ExceptionHappend != null)
-            {
-                this.ExceptionHappend(this, new EventArgs.ExceptionHappendEventArgs(ex));
-            }
+            this.OnExceptionHappend(new EventArgs.ExceptionHappendEventArgs(ex));
         }
 
-        protected virtual void OnDispose() { }
+        protected virtual void DisposeHandle() { }
 
         public void Dispose()
         {
-#if DEBUG_CORE_DEBUGGER
-            CoreDebugger.WriteLine("[{0}] Dispose Start", this.EngineID);
-#endif
             if ((this.State != EngineState.Disposing)
                 && (this.State != EngineState.Disposed))
             {
@@ -240,15 +209,12 @@ namespace Starry.Services.Core
                         && (this.State != EngineState.Disposed))
                     {
                         this.State = EngineState.Disposing;
-                        this.DisposeTaskAndCancelToken();
-                        this.OnDispose();
+                        this.DisposeWorkThread();
+                        this.DisposeHandle();
                         this.State = EngineState.Disposed;
                     }
                 }
             }
-#if DEBUG_CORE_DEBUGGER
-            CoreDebugger.WriteLine("[{0}] Dispose End", this.EngineID);
-#endif
         }
     }
 }
